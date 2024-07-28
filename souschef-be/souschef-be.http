@@ -1,0 +1,6 @@
+@souschef_be_HostAddress = http://localhost:5293
+
+GET {{souschef_be_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

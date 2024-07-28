@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "souschef-fe", "souschef-fe\souschef-fe.csproj", "{7422A0A2-C37C-4DA3-BCFB-EDAFC3E6DB21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "souschef-be", "souschef-be\souschef-be.csproj", "{2D155BEE-A32E-42AE-B3FA-4024F38982A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7422A0A2-C37C-4DA3-BCFB-EDAFC3E6DB21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7422A0A2-C37C-4DA3-BCFB-EDAFC3E6DB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7422A0A2-C37C-4DA3-BCFB-EDAFC3E6DB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7422A0A2-C37C-4DA3-BCFB-EDAFC3E6DB21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D155BEE-A32E-42AE-B3FA-4024F38982A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D155BEE-A32E-42AE-B3FA-4024F38982A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D155BEE-A32E-42AE-B3FA-4024F38982A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D155BEE-A32E-42AE-B3FA-4024F38982A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

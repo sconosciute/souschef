@@ -1,0 +1,7 @@
+*.env
+/.idea
+/obj
+/souschef-be/obj
+/souschef-fe/obj
+/souschef-be/bin
+/souschef-fe/bin

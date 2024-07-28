@@ -1,0 +1,41 @@
+services:
+  frontend-dev:
+    build:
+      context: souschef-fe
+      dockerfile: Dockerfile
+      target: base
+    env_file:
+      - .env
+    volumes:
+      - ./souschef-fe:/code/app
+    container_name: souschef-fe
+    ports:
+      - 5161:5161
+    depends_on:
+      db:
+        condition: service_healthy
+  backend-dev:
+    build:
+      context: souschef-be
+      dockerfile: Dockerfile
+      target: base
+    env_file:
+      - .env
+    volumes:
+      - ./souschef-be:/code/app
+    container_name: souschef-be
+    ports:
+      - 5293:5293
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
