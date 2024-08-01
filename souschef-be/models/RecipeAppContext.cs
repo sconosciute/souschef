@@ -5,7 +5,7 @@ namespace souschef_be.models;
 
 public class RecipeAppContext : DbContext
 {
-    public DbSet<TestMessages> Messages { get; set; }
+    public DbSet<Message> Messages { get; set; }
 
     public string? PgConn { get; } = Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__PG");
 
@@ -16,9 +16,9 @@ public class RecipeAppContext : DbContext
     }
 }
 
-public class TestMessages
+public class Message
 {
     [Key]
     public int MsgId { get; init; }
-    public string Message { get; set; } = null!;
+    public string MsgText { get; init; } = null!;
 }

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using souschef_be.models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<RecipeAppContext>();
+builder.Services.AddScoped<IDbService, PgDbService>();
 
 var app = builder.Build();
-
 
 
 // Configure the HTTP request pipeline.
@@ -22,72 +20,90 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<RecipeAppContext>();
-    context.Database.EnsureCreated();
-    // DbInitializer.Initialize(context);
-}
-
 app.UseHttpsRedirection();
 
-async Task MessageGet(RecipeAppContext db, int? id)
+app.MapPost("/msg", (Message msg, IDbService svc) =>
 {
-    if (id == null)
+    Console.Out.WriteLine($"PG string: {Environment.GetEnvironmentVariable("CONNECTIONSTRINGS_PG")}");
+    var res = svc.SendMessage(msg);
+    svc.Commit();
+    return res;
+});
+
+app.MapGet("/msg/all", (IDbService svc) => svc.GetAllMessages());
+
+app.MapGet("/msg/{id:int}", Results<Ok<Message>, NotFound> (int id, IDbService svc) =>
+{
+    var msg = svc.GetMessage(id);
+    return msg is null
+        ? TypedResults.NotFound()
+        : TypedResults.Ok(msg);
+});
+
+app.MapDelete("/msg/{id:int}", Results<NoContent, NotFound> (int id, IDbService svc) =>
+{
+    if (svc.DeleteMessage(id))
     {
-        Results.NotFound();
+        return TypedResults.NoContent();
     }
 
-    try
-    {
-        var message = await db.Messages.SingleAsync(m => m.MsgId == id);
-        Results.Ok(message);
-    }
-    catch (Exception e)
-    {
-        if (e is InvalidOperationException)
-        {
-            Results.NotFound("No such message ID in database.");
-        }
-        else
-        {
-            Results
-        }
-    }
-
-}
+    return TypedResults.NotFound();
+});
 
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
-app.MapPost("/messages", () =>
-{
-    
-})
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+
+internal interface IDbService
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    Message? GetMessage(int id);
+    List<Message> GetAllMessages();
+    Message SendMessage(Message msg);
+    bool DeleteMessage(int id);
+    void Commit();
+}
+
+internal class PgDbService : IDbService
+{
+    private RecipeAppContext _db = new RecipeAppContext();
+
+    public Message? GetMessage(int id)
+    {
+        return _db.Messages.Find(id);
+    }
+
+    public List<Message> GetAllMessages()
+    {
+        try
+        {
+            return _db.Messages.ToList();
+        }
+        catch (ArgumentNullException e)
+        {
+            return [];
+        }
+    }
+
+    public Message SendMessage(Message msg)
+    {
+        var res = _db.Messages.Add(msg).Entity;
+        return res;
+    }
+
+    public bool DeleteMessage(int id)
+    {
+       var msg = _db.Messages.Find(id);
+       if (msg is null)
+       {
+           return false;
+       }
+       _db.Messages.Remove(msg);
+       return true;
+    }
+
+    public void Commit()
+    {
+        _db.SaveChanges();
+    }
 }
