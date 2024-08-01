@@ -24,7 +24,7 @@ app.UseHttpsRedirection();
 
 app.MapPost("/msg", (Message msg, IDbService svc) =>
 {
-    Console.Out.WriteLine($"PG string: {Environment.GetEnvironmentVariable("CONNECTIONSTRINGS_PG")}");
+    Console.Out.WriteLine($"PG string: {Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__PG")}");
     var res = svc.SendMessage(msg);
     svc.Commit();
     return res;

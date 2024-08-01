@@ -11,7 +11,6 @@ public class RecipeAppContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        Console.Out.WriteLine(PgConn);
         options.UseNpgsql(PgConn);
     }
 }
