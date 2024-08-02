@@ -66,7 +66,7 @@ internal interface IDbService
 
 internal class PgDbService : IDbService
 {
-    private RecipeAppContext _db = new RecipeAppContext();
+    private readonly RecipeAppContext _db = new();
 
     public Message? GetMessage(int id)
     {
