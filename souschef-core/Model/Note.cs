@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace souschef_core.Model;
 
-namespace souschef_be.models;
-
-public partial class Comment
+public partial class Note
 {
     public long? UserId { get; set; }
 
     public long? RecipeId { get; set; }
 
-    public string? Comment1 { get; set; }
+    public string? Note1 { get; set; }
 
     public virtual Recipe? Recipe { get; set; }
 

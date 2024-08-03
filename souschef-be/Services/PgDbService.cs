@@ -1,8 +1,9 @@
 using souschef_be.models;
+using souschef_core.Model;
 
 namespace souschef_be.Services;
 
-internal class PgDbService : IMessageSvc, IMeasurementSvc
+internal class PgDbService : IBeMessageSvc, IMeasurementSvc
 {
     private readonly SouschefContext _db = new();
 

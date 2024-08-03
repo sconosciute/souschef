@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using souschef_core.Model;
 
 namespace souschef_be.models;
 

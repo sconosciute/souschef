@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace souschef_be.models;
+﻿namespace souschef_core.Model;
 
 public partial class User
 {

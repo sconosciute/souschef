@@ -1,17 +1,14 @@
-using souschef_be.models;
+using souschef_core.Model;
+using souschef_core.Services;
 
 namespace souschef_be.Services;
 
-internal interface IMessageSvc
+public interface IBeMessageSvc : IMessageSvc
 {
-    Message? GetMessage(int id);
-    List<Message> GetAllMessages();
-    Message SendMessage(Message msg);
-    bool DeleteMessage(int id);
     void Commit();
 }
 
-internal interface IMeasurementSvc
+public interface IMeasurementSvc
 {
     List<Measurement> GetAllMeasures();
 }

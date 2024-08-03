@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "souschef-fe", "souschef-fe\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "souschef-be", "souschef-be\souschef-be.csproj", "{2D155BEE-A32E-42AE-B3FA-4024F38982A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "souschef-core", "souschef-core\souschef-core.csproj", "{B8B1B85D-410A-4FC2-B623-7114ABD64860}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{2D155BEE-A32E-42AE-B3FA-4024F38982A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D155BEE-A32E-42AE-B3FA-4024F38982A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D155BEE-A32E-42AE-B3FA-4024F38982A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B1B85D-410A-4FC2-B623-7114ABD64860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B1B85D-410A-4FC2-B623-7114ABD64860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B1B85D-410A-4FC2-B623-7114ABD64860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B1B85D-410A-4FC2-B623-7114ABD64860}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

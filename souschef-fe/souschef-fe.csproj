@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\souschef-be\souschef-be.csproj" />
+      <ProjectReference Include="..\souschef-core\souschef-core.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using souschef_core.Model;
 
 namespace souschef_be.models;
 
