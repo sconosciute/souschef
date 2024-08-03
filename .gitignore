@@ -3,5 +3,8 @@
 /obj
 /souschef-be/obj
 /souschef-fe/obj
+/souschef-core/obj
+
 /souschef-be/bin
 /souschef-fe/bin
+/souschef-core/bin
