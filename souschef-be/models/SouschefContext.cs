@@ -6,7 +6,6 @@ namespace souschef_be.models;
 public partial class SouschefContext : DbContext
 {
     private readonly string? _pgConn = Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__PG");
-    private readonly NpgsqlDataSourceBuilder _sourceBuilder = new(_pgConn);
     private NpgsqlDataSource Source { get; }
 
     public SouschefContext()
@@ -22,8 +21,9 @@ public partial class SouschefContext : DbContext
 
     private NpgsqlDataSource InitSource()
     {
-        _sourceBuilder.MapEnum<MeasureType>();
-        return _sourceBuilder.Build();
+        var sourceBuilder = new NpgsqlDataSourceBuilder(_pgConn);
+        sourceBuilder.MapEnum<MeasureType>();
+        return sourceBuilder.Build();
     }
 
 
@@ -163,6 +163,7 @@ public partial class SouschefContext : DbContext
                 .HasColumnName("meas_id");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.UnitMeasure).HasColumnName("unit_measure");
+            entity.Property((e => e.Type)).HasColumnName("type");
         });
 
         modelBuilder.Entity<Message>(entity => { entity.HasKey(e => e.MsgId); });
