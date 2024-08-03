@@ -14,10 +14,3 @@ public class RecipeAppContext : DbContext
         options.UseNpgsql(PgConn);
     }
 }
-
-public class Message
-{
-    [Key]
-    public int MsgId { get; init; }
-    public string MsgText { get; init; } = null!;
-}

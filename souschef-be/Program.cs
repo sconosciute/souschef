@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using souschef_be.models;
+using souschef_be.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<RecipeAppContext>();
-builder.Services.AddScoped<IDbService, PgDbService>();
+builder.Services.AddScoped<IMessageSvc, PgDbService>();
+builder.Services.AddScoped<IMeasurementSvc, PgDbService>();
 
 var app = builder.Build();
 
@@ -22,7 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/msg", (Message msg, IDbService svc) =>
+app.MapPost("/msg", (Message msg, IMessageSvc svc) =>
 {
     Console.Out.WriteLine($"PG string: {Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__PG")}");
     var res = svc.SendMessage(msg);
@@ -30,9 +32,9 @@ app.MapPost("/msg", (Message msg, IDbService svc) =>
     return res;
 });
 
-app.MapGet("/msg/all", (IDbService svc) => svc.GetAllMessages());
+app.MapGet("/msg/all", (IMessageSvc svc) => svc.GetAllMessages());
 
-app.MapGet("/msg/{id:int}", Results<Ok<Message>, NotFound> (int id, IDbService svc) =>
+app.MapGet("/msg/{id:int}", Results<Ok<Message>, NotFound> (int id, IMessageSvc svc) =>
 {
     var msg = svc.GetMessage(id);
     return msg is null
@@ -40,7 +42,7 @@ app.MapGet("/msg/{id:int}", Results<Ok<Message>, NotFound> (int id, IDbService s
         : TypedResults.Ok(msg);
 });
 
-app.MapDelete("/msg/{id:int}", Results<NoContent, NotFound> (int id, IDbService svc) =>
+app.MapDelete("/msg/{id:int}", Results<NoContent, NotFound> (int id, IMessageSvc svc) =>
 {
     if (svc.DeleteMessage(id))
     {
@@ -50,60 +52,12 @@ app.MapDelete("/msg/{id:int}", Results<NoContent, NotFound> (int id, IDbService 
     return TypedResults.NotFound();
 });
 
+app.MapGet("/measurement", (IMeasurementSvc svc) => svc.GetAllMeasures());
+
 
 
 app.Run();
 
 
-internal interface IDbService
-{
-    Message? GetMessage(int id);
-    List<Message> GetAllMessages();
-    Message SendMessage(Message msg);
-    bool DeleteMessage(int id);
-    void Commit();
-}
 
-internal class PgDbService : IDbService
-{
-    private readonly RecipeAppContext _db = new();
 
-    public Message? GetMessage(int id)
-    {
-        return _db.Messages.Find(id);
-    }
-
-    public List<Message> GetAllMessages()
-    {
-        try
-        {
-            return _db.Messages.ToList();
-        }
-        catch (ArgumentNullException e)
-        {
-            return [];
-        }
-    }
-
-    public Message SendMessage(Message msg)
-    {
-        var res = _db.Messages.Add(msg).Entity;
-        return res;
-    }
-
-    public bool DeleteMessage(int id)
-    {
-       var msg = _db.Messages.Find(id);
-       if (msg is null)
-       {
-           return false;
-       }
-       _db.Messages.Remove(msg);
-       return true;
-    }
-
-    public void Commit()
-    {
-        _db.SaveChanges();
-    }
-}
