@@ -3,16 +3,19 @@ using souschef_core.Services;
 
 namespace souschef_fe.Services;
 
-public class ClientMessageService : IMessageSvc
+public class ClientMessageService(HttpClient api) : IMessageSvc
 {
+    private string _uri = "/msg";
     public Message? GetMessage(int id)
     {
-        throw new NotImplementedException();
+        var res = api.GetFromJsonAsync<Message>(_uri + $"/{id}");
+        return res.Result;
     }
 
     public List<Message> GetAllMessages()
     {
-        throw new NotImplementedException();
+        var res = api.GetFromJsonAsync<List<Message>>(_uri + $"/all");
+        return res.Result ?? [];
     }
 
     public Message SendMessage(Message msg)
