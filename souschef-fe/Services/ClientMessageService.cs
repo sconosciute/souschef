@@ -6,14 +6,14 @@ namespace souschef_fe.Services;
 
 public class ClientMessageService(HttpClient api) : IMessageSvc
 {
-    private const string Uri = "/msg";
+    private const string Uri = "http://localhost:5293/msg";
 
     public async Task<Message?> GetMessageAsync(int id)
     {
         return await api.GetFromJsonAsync<Message>($"{Uri}/{id}");
     }
 
-    public async Task<List<Message>> GetAllMessagesAsync()
+    public async Task<List<Message>?> GetAllMessagesAsync()
     {
         return await api.GetFromJsonAsync<List<Message>>($"{Uri}/all") ?? [];
     }

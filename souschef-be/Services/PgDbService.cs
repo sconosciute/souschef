@@ -12,7 +12,7 @@ internal class PgDbService : IBeMessageSvc, IMeasurementSvc
         return await _db.Messages.FindAsync(id);
     }
 
-    public async Task<List<Message>> GetAllMessagesAsync()
+    public async Task<List<Message>?> GetAllMessagesAsync()
     {
         return await _db.Messages.ToListAsync();
     }

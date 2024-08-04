@@ -25,27 +25,27 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/msg", (Message msg, IBeMessageSvc svc) =>
+app.MapPost("/msg", async (Message msg, IBeMessageSvc svc) =>
 {
     Console.Out.WriteLine($"PG string: {Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__PG")}");
-    var res = svc.SendMessage(msg);
-    svc.Commit();
+    var res = await svc.SendMessageAsync(msg);
+    await svc.CommitAsync();
     return res;
 });
 
-app.MapGet("/msg/all", (IBeMessageSvc svc) => svc.GetAllMessages());
+app.MapGet("/msg/all", (IBeMessageSvc svc) => svc.GetAllMessagesAsync());
 
-app.MapGet("/msg/{id:int}", Results<Ok<Message>, NotFound> (int id, IBeMessageSvc svc) =>
+app.MapGet("/msg/{id:int}", async Task<Results<Ok<Message>, NotFound>> (int id, IBeMessageSvc svc) =>
 {
-    var msg = svc.GetMessage(id);
+    var msg = await svc.GetMessageAsync(id);
     return msg is null
         ? TypedResults.NotFound()
         : TypedResults.Ok(msg);
 });
 
-app.MapDelete("/msg/{id:int}", Results<NoContent, NotFound> (int id, IBeMessageSvc svc) =>
+app.MapDelete("/msg/{id:int}", async Task<Results<NoContent, NotFound>> (int id, IBeMessageSvc svc) =>
 {
-    if (svc.DeleteMessage(id))
+    if ( await svc.DeleteMessageAsync(id))
     {
         return TypedResults.NoContent();
     }

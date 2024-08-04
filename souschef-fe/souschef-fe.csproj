@@ -18,5 +18,10 @@
     <ItemGroup>
       <ProjectReference Include="..\souschef-core\souschef-core.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <Watch Include="**\*.razor" />
+        <Watch Include="**\*.cshtml" />
+    </ItemGroup>
 
 </Project>

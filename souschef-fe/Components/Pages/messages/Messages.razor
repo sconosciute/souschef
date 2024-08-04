@@ -1,0 +1,57 @@
+@page "/messages"
+@inject IMessageSvc MessageService
+
+@using souschef_core.Model
+@using souschef_core.Services
+
+<h2>Messages</h2>
+
+<div>
+    <h3>Send a Message</h3>
+    <EditForm Model="@_newMessageContent" OnValidSubmit="@SendMessageAsync" FormName="SendMessage">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="content">Content</label>
+            <InputText id="content" class="form-control" @bind-Value="_newMessageContent.MsgText" />
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </EditForm>
+</div>
+
+<div>
+    <h3>All Messages</h3>
+    <ul>
+        @if (_messages is not null && _messages.Any())
+        {
+            foreach (var message in _messages)
+            {
+                <li>@message.MsgText</li>
+            }
+        }
+        else
+        {
+            <li>No messages found.</li>
+        }
+    </ul>
+</div>
+
+@code {
+    private List<Message>? _messages;
+    private Message _newMessageContent = new Message();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _messages = await MessageService.GetAllMessagesAsync();
+    }
+
+    private async Task SendMessageAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(_newMessageContent.MsgText))
+        {
+            await MessageService.SendMessageAsync(_newMessageContent);
+            _messages = await MessageService.GetAllMessagesAsync();
+            _newMessageContent = new Message(); // Reset the form
+        }
+    }
+}
