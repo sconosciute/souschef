@@ -1,3 +1,4 @@
+using System.Net;
 using souschef_core.Model;
 using souschef_core.Services;
 
@@ -5,26 +6,28 @@ namespace souschef_fe.Services;
 
 public class ClientMessageService(HttpClient api) : IMessageSvc
 {
-    private string _uri = "/msg";
-    public Message? GetMessage(int id)
+    private const string Uri = "/msg";
+
+    public async Task<Message?> GetMessageAsync(int id)
     {
-        var res = api.GetFromJsonAsync<Message>(_uri + $"/{id}");
-        return res.Result;
+        return await api.GetFromJsonAsync<Message>($"{Uri}/{id}");
     }
 
-    public List<Message> GetAllMessages()
+    public async Task<List<Message>> GetAllMessagesAsync()
     {
-        var res = api.GetFromJsonAsync<List<Message>>(_uri + $"/all");
-        return res.Result ?? [];
+        return await api.GetFromJsonAsync<List<Message>>($"{Uri}/all") ?? [];
     }
 
-    public Message SendMessage(Message msg)
+    public async Task<Message?> SendMessageAsync(Message? msg)
     {
-        throw new NotImplementedException();
+        var res = await api.PostAsJsonAsync(Uri, msg);
+        res.EnsureSuccessStatusCode();
+        return await res.Content.ReadFromJsonAsync<Message>();
     }
 
-    public bool DeleteMessage(int id)
+    public async Task<bool> DeleteMessageAsync(int id)
     {
-        throw new NotImplementedException();
+        var res = await api.DeleteAsync($"{Uri}/{id}");
+        return res.StatusCode == HttpStatusCode.NoContent;
     }
 }

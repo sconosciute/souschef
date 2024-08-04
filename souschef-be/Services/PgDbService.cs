@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using souschef_be.models;
 using souschef_core.Model;
 
@@ -6,44 +7,39 @@ namespace souschef_be.Services;
 internal class PgDbService : IBeMessageSvc, IMeasurementSvc
 {
     private readonly SouschefContext _db = new();
-
-    public Message? GetMessage(int id)
+    public async Task<Message?> GetMessageAsync(int id)
     {
-        return _db.Messages.Find(id);
+        return await _db.Messages.FindAsync(id);
     }
 
-    public List<Message> GetAllMessages()
+    public async Task<List<Message>> GetAllMessagesAsync()
     {
-        try
-        {
-            return _db.Messages.ToList();
-        }
-        catch (ArgumentNullException e)
-        {
-            return [];
-        }
+        return await _db.Messages.ToListAsync();
     }
 
-    public Message SendMessage(Message msg)
+    public async Task<Message?> SendMessageAsync(Message? msg)
     {
-        var res = _db.Messages.Add(msg).Entity;
+        var res = (await _db.Messages.AddAsync(msg)).Entity;
+        await _db.SaveChangesAsync();
         return res;
     }
 
-    public bool DeleteMessage(int id)
+    public async Task<bool> DeleteMessageAsync(int id)
     {
-        var msg = _db.Messages.Find(id);
+        var msg = await _db.Messages.FindAsync(id);
         if (msg is null)
         {
             return false;
         }
+
         _db.Messages.Remove(msg);
+        await _db.SaveChangesAsync();
         return true;
     }
 
-    public void Commit()
+    public async Task CommitAsync()
     {
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
     }
 
     public List<Measurement> GetAllMeasures()

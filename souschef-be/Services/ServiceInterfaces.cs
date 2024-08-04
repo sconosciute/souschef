@@ -5,7 +5,7 @@ namespace souschef_be.Services;
 
 public interface IBeMessageSvc : IMessageSvc
 {
-    void Commit();
+    Task CommitAsync();
 }
 
 public interface IMeasurementSvc
