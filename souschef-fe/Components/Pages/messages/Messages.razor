@@ -1,5 +1,8 @@
 @page "/messages"
+@rendermode InteractiveServer
+@using souschef_fe.Services
 @inject IMessageSvc MessageService
+@inject ILogger<ClientMessageService> Logger
 
 @using souschef_core.Model
 @using souschef_core.Services
@@ -8,13 +11,13 @@
 
 <div>
     <h3>Send a Message</h3>
-    <EditForm Model="@_newMessageContent" OnValidSubmit="@SendMessageAsync" FormName="SendMessage">
+    <EditForm Model="@NewMsg" OnValidSubmit="@HandleSubmit" FormName="SendMessage">
         <DataAnnotationsValidator />
-        <ValidationSummary />
         <div class="form-group">
             <label for="content">Content</label>
-            <InputText id="content" class="form-control" @bind-Value="_newMessageContent.MsgText" />
+            <InputText id="content" class="form-control" @bind-Value="@NewMsg.MsgText" />
         </div>
+        <ValidationSummary />
         <button type="submit" class="btn btn-primary">Send</button>
     </EditForm>
 </div>
@@ -38,20 +41,25 @@
 
 @code {
     private List<Message>? _messages;
-    private Message _newMessageContent = new Message();
+    [Parameter]
+    public Message NewMsg { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         _messages = await MessageService.GetAllMessagesAsync();
     }
 
-    private async Task SendMessageAsync()
+    private async Task HandleSubmit()
     {
-        if (!string.IsNullOrWhiteSpace(_newMessageContent.MsgText))
+        if (!string.IsNullOrWhiteSpace(NewMsg.MsgText))
         {
-            await MessageService.SendMessageAsync(_newMessageContent);
+            await MessageService.SendMessageAsync(NewMsg);
             _messages = await MessageService.GetAllMessagesAsync();
-            _newMessageContent = new Message(); // Reset the form
+            NewMsg = new Message(); // Reset the form
+        }
+        else
+        {
+            Logger.LogInformation("Client attempted to submit empty message");
         }
     }
 }

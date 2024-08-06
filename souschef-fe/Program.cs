@@ -5,6 +5,7 @@ using souschef_fe.Components;
 using souschef_fe.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
