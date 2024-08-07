@@ -8,7 +8,7 @@ public class ClientMessageService(HttpClient api) : IMessageSvc
 {
     private const string Uri = "http://localhost:5293/msg";
 
-    public async Task<Message?> GetMessageAsync(int id)
+    public async Task<Message?> GetMessageAsync(long id)
     {
         return await api.GetFromJsonAsync<Message>($"{Uri}/{id}");
     }
@@ -25,7 +25,7 @@ public class ClientMessageService(HttpClient api) : IMessageSvc
         return await res.Content.ReadFromJsonAsync<Message>();
     }
 
-    public async Task<bool> DeleteMessageAsync(int id)
+    public async Task<bool> DeleteMessageAsync(long id)
     {
         var res = await api.DeleteAsync($"{Uri}/{id}");
         return res.StatusCode == HttpStatusCode.NoContent;

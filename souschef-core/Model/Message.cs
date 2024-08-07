@@ -4,7 +4,7 @@ namespace souschef_core.Model;
 
 public partial class Message : IDbModel
 {
-    public int MsgId { get; set; }
+    public long MsgId { get; set; }
 
     public string? MsgText { get; set; }
 }

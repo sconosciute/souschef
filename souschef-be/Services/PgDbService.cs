@@ -67,7 +67,7 @@ internal class PgDbService : IBeMessageSvc, IMeasurementSvc
         }
     }
 
-    public async Task<Message?> GetMessageAsync(int id)
+    public async Task<Message?> GetMessageAsync(long id)
     {
         return await _msgComp.GetAsync(id);
     }
@@ -82,7 +82,7 @@ internal class PgDbService : IBeMessageSvc, IMeasurementSvc
         return await _msgComp.AddAsync(msg!);
     }
 
-    public async Task<bool> DeleteMessageAsync(int id)
+    public async Task<bool> DeleteMessageAsync(long id)
     {
         return await _msgComp.DeleteAsync(id);
     }

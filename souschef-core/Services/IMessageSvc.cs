@@ -4,8 +4,8 @@ namespace souschef_core.Services;
 
 public interface IMessageSvc
 {
-    Task<Message?> GetMessageAsync(int id);
+    Task<Message?> GetMessageAsync(long id);
     Task<List<Message>?> GetAllMessagesAsync();
     Task<Message?> SendMessageAsync(Message? msg);
-    Task<bool> DeleteMessageAsync(int id);
+    Task<bool> DeleteMessageAsync(long id);
 }
