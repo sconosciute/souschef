@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model;
 
-public partial class Measurement
+public partial class Measurement : IDbModel
 {
     public long MeasId { get; set; }
 

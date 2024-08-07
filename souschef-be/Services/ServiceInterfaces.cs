@@ -8,6 +8,11 @@ public interface IBeMessageSvc : IMessageSvc
     Task CommitAsync();
 }
 
+public interface IBeTagSvc : ITagSvc
+{
+    Task CommitAsync();
+}
+
 public interface IMeasurementSvc
 {
     List<Measurement> GetAllMeasures();

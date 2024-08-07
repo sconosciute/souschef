@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model;
 
-public partial class Ingredient
+public partial class Ingredient : IDbModel
 {
     public long IngrId { get; set; }
 

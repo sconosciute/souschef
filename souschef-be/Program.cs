@@ -29,7 +29,6 @@ app.UseHttpsRedirection();
 
 app.MapPost("/msg", async (Message msg, IBeMessageSvc svc) =>
 {
-    Console.Out.WriteLine($"PG string: {Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__PG")}");
     var res = await svc.SendMessageAsync(msg);
     await svc.CommitAsync();
     return res;
@@ -37,7 +36,7 @@ app.MapPost("/msg", async (Message msg, IBeMessageSvc svc) =>
 
 app.MapGet("/msg/all", (IBeMessageSvc svc) => svc.GetAllMessagesAsync());
 
-app.MapGet("/msg/{id:int}", async Task<Results<Ok<Message>, NotFound>> (int id, IBeMessageSvc svc) =>
+app.MapGet("/msg/{id:long}", async Task<Results<Ok<Message>, NotFound>> (int id, IBeMessageSvc svc) =>
 {
     var msg = await svc.GetMessageAsync(id);
     return msg is null
@@ -45,7 +44,7 @@ app.MapGet("/msg/{id:int}", async Task<Results<Ok<Message>, NotFound>> (int id, 
         : TypedResults.Ok(msg);
 });
 
-app.MapDelete("/msg/{id:int}", async Task<Results<NoContent, NotFound>> (int id, IBeMessageSvc svc) =>
+app.MapDelete("/msg/{id:long}", async Task<Results<NoContent, NotFound>> (int id, IBeMessageSvc svc) =>
 {
     if ( await svc.DeleteMessageAsync(id))
     {

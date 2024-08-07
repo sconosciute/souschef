@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model;
 
-public partial class Comment
+public partial class Comment : IDbModel
 {
     public long? UserId { get; set; }
 

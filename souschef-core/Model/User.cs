@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model;
 
-public partial class User
+public partial class User : IDbModel
 {
     public long UserId { get; set; }
 

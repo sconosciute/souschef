@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model;
 
-public partial class Note
+public partial class Note : IDbModel
 {
     public long? UserId { get; set; }
 

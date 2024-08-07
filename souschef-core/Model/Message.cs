@@ -2,7 +2,7 @@
 
 namespace souschef_core.Model;
 
-public partial class Message
+public partial class Message : IDbModel
 {
     public int MsgId { get; set; }
 

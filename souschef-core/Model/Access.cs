@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model;
 
-public partial class Access
+public partial class Access : IDbModel
 {
     public long UserId { get; set; }
 

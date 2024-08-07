@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model;
 
-public partial class Tag
+public partial class Tag : IDbModel
 {
     public long TagId { get; set; }
 

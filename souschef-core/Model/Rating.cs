@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model;
 
-public partial class Rating
+public partial class Rating : IDbModel
 {
     public long UserId { get; set; }
 
