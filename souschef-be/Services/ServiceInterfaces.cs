@@ -12,3 +12,8 @@ public interface IMeasurementSvc
 {
     List<Measurement> GetAllMeasures();
 }
+
+public interface IBeUserSvc : IUserSvc
+{
+    Task CommitAsync();
+}

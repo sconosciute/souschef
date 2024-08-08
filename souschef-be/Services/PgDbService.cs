@@ -5,10 +5,16 @@ using souschef_core.Model;
 
 namespace souschef_be.Services;
 
-internal class PgDbService(ILogger<PgDbService> logger) : IBeMessageSvc, IMeasurementSvc
+internal class PgDbService(ILogger<PgDbService> logger) : IBeMessageSvc, IMeasurementSvc, IBeUserSvc
 {
     private readonly SouschefContext _db = new();
     private readonly ILogger _log = logger;
+
+    public async Task<User?> GetUserAsync(string username)
+    {
+        // return await _db.Users.FindAsync(username);
+        return await _db.Users.SingleOrDefaultAsync(u => u.Username == username);
+    }
 
     public async Task<Message?> GetMessageAsync(int id)
     {

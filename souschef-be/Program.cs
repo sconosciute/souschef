@@ -15,6 +15,8 @@ builder.Services.AddDbContext<RecipeAppContext>();
 builder.Services.AddScoped<IBeMessageSvc, PgDbService>();
 builder.Services.AddScoped<IMeasurementSvc, PgDbService>();
 
+builder.Services.AddScoped<IBeUserSvc, PgDbService>();
+
 var app = builder.Build();
 
 
@@ -36,6 +38,15 @@ app.MapPost("/msg", async (Message msg, IBeMessageSvc svc) =>
 });
 
 app.MapGet("/msg/all", (IBeMessageSvc svc) => svc.GetAllMessagesAsync());
+
+app.MapGet("/user/{username}", async Task<Results<Ok<User>, NotFound>> (string username, IBeUserSvc svc) =>
+{
+    var user = await svc.GetUserAsync(username);
+    
+    return user is null
+        ? TypedResults.NotFound()
+        : TypedResults.Ok(user);
+});
 
 app.MapGet("/msg/{id:int}", async Task<Results<Ok<Message>, NotFound>> (int id, IBeMessageSvc svc) =>
 {
