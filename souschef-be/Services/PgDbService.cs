@@ -33,6 +33,14 @@ internal class PgDbService(ILogger<PgDbService> logger) : IBeMessageSvc, IMeasur
         var post = await _db.SaveChangesAsync();
         return post == 1 ? res : throw new DbApiFailureException("POST to DB resulted in 0 or multiple rows returned");
     }
+    
+    public async Task<User?> SendUserAsync(User? user)
+    {
+        _log.LogDebug("Received message to post:{user}", user);
+        var res = (await _db.Users.AddAsync(user)).Entity;
+        var post = await _db.SaveChangesAsync();
+        return post == 1 ? res : throw new DbApiFailureException("POST to DB resulted in 0 or multiple rows returned");
+    }
 
     public async Task<bool> DeleteMessageAsync(int id)
     {

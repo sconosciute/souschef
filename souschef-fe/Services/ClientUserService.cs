@@ -13,4 +13,11 @@ public class ClientUserService(HttpClient api) : IUserSvc
         return await api.GetFromJsonAsync<User>($"{Uri}/{username}");
     }
     
+    public async Task<User?> SendUserAsync(User? user)
+    {
+        var res = await api.PostAsJsonAsync(Uri, user);
+        res.EnsureSuccessStatusCode();
+        return await res.Content.ReadFromJsonAsync<User>();
+    }
+    
 }

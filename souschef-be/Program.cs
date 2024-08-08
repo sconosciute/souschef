@@ -37,6 +37,14 @@ app.MapPost("/msg", async (Message msg, IBeMessageSvc svc) =>
     return res;
 });
 
+app.MapPost("/user", async (User user, IBeUserSvc svc) =>
+{
+    Console.Out.WriteLine($"PG string: {Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__PG")}");
+    var res = await svc.SendUserAsync(user);
+    await svc.CommitAsync();
+    return res;
+});
+
 app.MapGet("/msg/all", (IBeMessageSvc svc) => svc.GetAllMessagesAsync());
 
 app.MapGet("/user/{username}", async Task<Results<Ok<User>, NotFound>> (string username, IBeUserSvc svc) =>
