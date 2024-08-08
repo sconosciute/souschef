@@ -9,12 +9,12 @@ internal class PgDbService : IBeMessageSvc, IMeasurementSvc
 {
     private readonly SouschefContext _db = new();
     private readonly ILogger _log;
-    private readonly PgCrudSvcComp<Message> _msgComp; 
+    private readonly PgCrudSvcComponent<Message> _msgComponent; 
 
     public PgDbService(ILogger<PgDbService> logger, ILoggerFactory logFactory)
     {
         _log = logger;
-        _msgComp = new PgCrudSvcComp<Message>(logFactory.CreateLogger<PgCrudSvcComp<Message>>(), _db);
+        _msgComponent = new PgCrudSvcComponent<Message>(logFactory.CreateLogger<PgCrudSvcComponent<Message>>(), _db);
     }
     
     
@@ -69,21 +69,21 @@ internal class PgDbService : IBeMessageSvc, IMeasurementSvc
 
     public async Task<Message?> GetMessageAsync(long id)
     {
-        return await _msgComp.GetAsync(id);
+        return await _msgComponent.GetAsync(id);
     }
 
     public async Task<List<Message>?> GetAllMessagesAsync()
     {
-        return await _msgComp.GetAllAsync();
+        return await _msgComponent.GetAllAsync();
     }
 
     public async Task<Message?> SendMessageAsync(Message? msg)
     {
-        return await _msgComp.AddAsync(msg!);
+        return await _msgComponent.AddAsync(msg!);
     }
 
     public async Task<bool> DeleteMessageAsync(long id)
     {
-        return await _msgComp.DeleteAsync(id);
+        return await _msgComponent.DeleteAsync(id);
     }
 }

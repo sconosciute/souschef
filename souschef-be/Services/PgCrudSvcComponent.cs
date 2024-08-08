@@ -5,7 +5,7 @@ using souschef_core.Model;
 
 namespace souschef_be.Services;
 
-public class PgCrudSvcComp<T>(ILogger<PgCrudSvcComp<T>> logger, SouschefContext db)
+public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, SouschefContext db)
     where T : class, IDbModel
 {
     private readonly DbSet<T> _set = db.Set<T>();
