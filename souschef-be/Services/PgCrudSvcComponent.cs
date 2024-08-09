@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using souschef_be.models;
 using souschef_core.Exceptions;
 using souschef_core.Model;
-using souschef_core.Services;
 
 namespace souschef_be.Services;
 

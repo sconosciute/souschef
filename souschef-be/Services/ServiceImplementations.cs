@@ -1,10 +1,10 @@
-using souschef_be.models;
+using Microsoft.EntityFrameworkCore;
 using souschef_core.Model;
 using souschef_core.Services;
 
 namespace souschef_be.Services;
 
-public class MsgSvcComponent(ILogger<PgCrudSvcComponent<Message>> logger, SouschefContext db)
+public class MsgSvcComponent(ILogger<PgCrudSvcComponent<Message>> logger, DbContext db)
     : PgCrudSvcComponent<Message>(logger, db), IMessageSvc
 {
     public Task<Message?> GetMessageAsync(long id) => GetAsync(id);
