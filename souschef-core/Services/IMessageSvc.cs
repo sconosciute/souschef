@@ -6,6 +6,6 @@ public interface IMessageSvc
 {
     Task<Message?> GetMessageAsync(long id);
     Task<List<Message>?> GetAllMessagesAsync();
-    Task<Message?> SendMessageAsync(Message? msg);
+    Task<Message?> AddMessageAsync(Message? msg);
     Task<bool> DeleteMessageAsync(long id);
 }

@@ -53,7 +53,7 @@
     {
         if (!string.IsNullOrWhiteSpace(NewMsg.MsgText))
         {
-            await MessageService.SendMessageAsync(NewMsg);
+            await MessageService.AddMessageAsync(NewMsg);
             _messages = await MessageService.GetAllMessagesAsync();
             NewMsg = new Message(); // Reset the form
         }

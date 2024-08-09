@@ -18,7 +18,7 @@ public class ClientMessageService(HttpClient api) : IMessageSvc
         return await api.GetFromJsonAsync<List<Message>>($"{Uri}/all") ?? [];
     }
 
-    public async Task<Message?> SendMessageAsync(Message? msg)
+    public async Task<Message?> AddMessageAsync(Message? msg)
     {
         var res = await api.PostAsJsonAsync(Uri, msg);
         res.EnsureSuccessStatusCode();
