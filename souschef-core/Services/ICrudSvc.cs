@@ -6,6 +6,7 @@ public interface ICrudSvc<T>
 {
     Task<T?> GetAsync(long id);
     Task<List<T>?> GetAllAsync();
-    Task<T?> AddAsync(T? msg);
+    Task<T?> AddAsync(T? ent);
+    Task<T?> UpdateAsync(T? ent);
     Task<bool> DeleteAsync(long id);
 }

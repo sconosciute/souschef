@@ -18,11 +18,16 @@ public class ClientMessageService(HttpClient api) : ICrudSvc<Message>
         return await api.GetFromJsonAsync<List<Message>>($"{Uri}/all") ?? [];
     }
 
-    public async Task<Message?> AddAsync(Message? msg)
+    public async Task<Message?> AddAsync(Message? ent)
     {
-        var res = await api.PostAsJsonAsync(Uri, msg);
+        var res = await api.PostAsJsonAsync(Uri, ent);
         res.EnsureSuccessStatusCode();
         return await res.Content.ReadFromJsonAsync<Message>();
+    }
+
+    public async Task<Message?> UpdateAsync(Message? ent)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<bool> DeleteAsync(long id)
