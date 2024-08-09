@@ -15,7 +15,7 @@ public class ClientMessageService(HttpClient api) : ICrudSvc<Message>
 
     public async Task<List<Message>?> GetAllAsync()
     {
-        return await api.GetFromJsonAsync<List<Message>>($"{Uri}/all") ?? [];
+        return await api.GetFromJsonAsync<List<Message>>($"{Uri}") ?? [];
     }
 
     public async Task<Message?> AddAsync(Message? ent)

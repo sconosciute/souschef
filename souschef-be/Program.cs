@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using FastEndpoints;
-
+using Microsoft.EntityFrameworkCore;
 using souschef_be.models;
 using souschef_be.Services;
 using souschef_core.Model;
@@ -14,7 +14,9 @@ builder.Logging.AddDebug();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<SouschefContext>();
+builder.Services.AddFastEndpoints();
+
+builder.Services.AddDbContext<DbContext, SouschefContext>();
 builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
 
 var app = builder.Build();
@@ -29,28 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/msg", async (Message msg, ICrudSvc<Message> svc) => await svc.AddAsync(msg));
-
-app.MapGet("/msg/all", (ICrudSvc<Message> svc) => svc.GetAllAsync());
-
-app.MapGet("/msg/{id:long}", async Task<Results<Ok<Message>, NotFound>> (int id, ICrudSvc<Message> svc) =>
-{
-    var msg = await svc.GetAsync(id);
-    return msg is null
-        ? TypedResults.NotFound()
-        : TypedResults.Ok(msg);
-});
-
-app.MapDelete("/msg/{id:long}", async Task<Results<NoContent, NotFound>> (int id, ICrudSvc<Message> svc) =>
-{
-    if ( await svc.DeleteAsync(id))
-    {
-        return TypedResults.NoContent();
-    }
-
-    return TypedResults.NotFound();
-});
-
+app.UseFastEndpoints();
 
 
 app.Run();
