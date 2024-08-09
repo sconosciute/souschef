@@ -27,6 +27,8 @@
 
     <ItemGroup>
       <Folder Include="Migrations\" />
+      <Folder Include="Routes\Auth\" />
+      <Folder Include="Routes\Closed\" />
     </ItemGroup>
 
     <ItemGroup>

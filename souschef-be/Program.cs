@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using FastEndpoints;
+
 using souschef_be.models;
 using souschef_be.Services;
 using souschef_core.Model;
