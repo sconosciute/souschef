@@ -22,6 +22,21 @@ public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, Sousch
         return await _set.ToListAsync();
     }
 
+    public async Task<T?> UpdateAsync(T updated)
+    {
+        var current = await _set.FindAsync(updated);
+        if (current is null)
+        {
+            return null;
+        }
+        _set.Update(updated);
+        var committed = await db.SaveChangesAsync();
+        return committed == 1
+            ? updated
+            : throw new DbApiFailureException($"Single update call returned {committed} rows");
+
+    }
+
     public async Task<T?> AddAsync(T ent)
     {
         logger.LogDebug("Received {type} to add to DB: {entity}", typeof(T), ent);
