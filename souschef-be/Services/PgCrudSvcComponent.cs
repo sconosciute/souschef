@@ -2,10 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using souschef_be.models;
 using souschef_core.Exceptions;
 using souschef_core.Model;
+using souschef_core.Services;
 
 namespace souschef_be.Services;
 
-public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, SouschefContext db)
+public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, DbContext db)
     where T : class, IDbModel
 {
     private readonly DbSet<T> _set = db.Set<T>();
@@ -37,8 +38,12 @@ public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, Sousch
 
     }
 
-    public async Task<T?> AddAsync(T ent)
+    public async Task<T?> AddAsync(T? ent)
     {
+        if (ent is null)
+        {
+            return null;
+        }
         logger.LogDebug("Received {type} to add to DB: {entity}", typeof(T), ent);
         var added = (await _set.AddAsync(ent)).Entity;
         var committed = await db.SaveChangesAsync();

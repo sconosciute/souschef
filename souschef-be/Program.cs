@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using souschef_be.models;
 using souschef_be.Services;
 using souschef_core.Model;
+using souschef_core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +12,8 @@ builder.Logging.AddDebug();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<RecipeAppContext>();
-builder.Services.AddScoped<IBeMessageSvc, PgDbService>();
-builder.Services.AddScoped<IMeasurementSvc, PgDbService>();
+builder.Services.AddDbContext<SouschefContext>();
+builder.Services.AddScoped<IMessageSvc, MsgSvcComponent>();
 
 var app = builder.Build();
 
@@ -27,16 +27,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/msg", async (Message msg, IBeMessageSvc svc) =>
-{
-    var res = await svc.SendMessageAsync(msg);
-    await svc.CommitAsync();
-    return res;
-});
+app.MapPost("/msg", async (Message msg, IMessageSvc svc) => await svc.AddMessageAsync(msg));
 
-app.MapGet("/msg/all", (IBeMessageSvc svc) => svc.GetAllMessagesAsync());
+app.MapGet("/msg/all", (IMessageSvc svc) => svc.GetAllMessagesAsync());
 
-app.MapGet("/msg/{id:long}", async Task<Results<Ok<Message>, NotFound>> (int id, IBeMessageSvc svc) =>
+app.MapGet("/msg/{id:long}", async Task<Results<Ok<Message>, NotFound>> (int id, IMessageSvc svc) =>
 {
     var msg = await svc.GetMessageAsync(id);
     return msg is null
@@ -44,7 +39,7 @@ app.MapGet("/msg/{id:long}", async Task<Results<Ok<Message>, NotFound>> (int id,
         : TypedResults.Ok(msg);
 });
 
-app.MapDelete("/msg/{id:long}", async Task<Results<NoContent, NotFound>> (int id, IBeMessageSvc svc) =>
+app.MapDelete("/msg/{id:long}", async Task<Results<NoContent, NotFound>> (int id, IMessageSvc svc) =>
 {
     if ( await svc.DeleteMessageAsync(id))
     {
@@ -53,8 +48,6 @@ app.MapDelete("/msg/{id:long}", async Task<Results<NoContent, NotFound>> (int id
 
     return TypedResults.NotFound();
 });
-
-app.MapGet("/measurement", (IMeasurementSvc svc) => svc.GetAllMeasures());
 
 
 
