@@ -4,28 +4,28 @@ using souschef_core.Services;
 
 namespace souschef_fe.Services;
 
-public class ClientMessageService(HttpClient api) : IMessageSvc
+public class ClientMessageService(HttpClient api) : ICrudSvc<Message>
 {
     private const string Uri = "http://localhost:5293/msg";
 
-    public async Task<Message?> GetMessageAsync(long id)
+    public async Task<Message?> GetAsync(long id)
     {
         return await api.GetFromJsonAsync<Message>($"{Uri}/{id}");
     }
 
-    public async Task<List<Message>?> GetAllMessagesAsync()
+    public async Task<List<Message>?> GetAllAsync()
     {
         return await api.GetFromJsonAsync<List<Message>>($"{Uri}/all") ?? [];
     }
 
-    public async Task<Message?> AddMessageAsync(Message? msg)
+    public async Task<Message?> AddAsync(Message? msg)
     {
         var res = await api.PostAsJsonAsync(Uri, msg);
         res.EnsureSuccessStatusCode();
         return await res.Content.ReadFromJsonAsync<Message>();
     }
 
-    public async Task<bool> DeleteMessageAsync(long id)
+    public async Task<bool> DeleteAsync(long id)
     {
         var res = await api.DeleteAsync($"{Uri}/{id}");
         return res.StatusCode == HttpStatusCode.NoContent;

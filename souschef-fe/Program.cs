@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using souschef_core.Exceptions;
+using souschef_core.Model;
 using souschef_core.Services;
 using souschef_fe.Components;
 using souschef_fe.Services;
@@ -11,7 +12,7 @@ builder.Logging.AddConsole();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<IMessageSvc, ClientMessageService>();
+builder.Services.AddScoped<ICrudSvc<Message>, ClientMessageService>();
 builder.Services.AddHttpClient("WebAPI",
     client => client.BaseAddress =
         new Uri(builder.Configuration["BackendUrl"] ?? throw new MissingUriException("Souschef-fe client base address")));

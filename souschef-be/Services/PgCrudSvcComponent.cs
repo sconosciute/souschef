@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using souschef_core.Exceptions;
 using souschef_core.Model;
+using souschef_core.Services;
 
 namespace souschef_be.Services;
 
-public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, DbContext db)
+public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, DbContext db) : ICrudSvc<T>
     where T : class, IDbModel
 {
     private readonly DbSet<T> _set = db.Set<T>();

@@ -13,7 +13,7 @@ builder.Logging.AddDebug();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<SouschefContext>();
-builder.Services.AddScoped<IMessageSvc, MsgSvcComponent>();
+builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
 
 var app = builder.Build();
 
@@ -27,21 +27,21 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/msg", async (Message msg, IMessageSvc svc) => await svc.AddMessageAsync(msg));
+app.MapPost("/msg", async (Message msg, ICrudSvc<Message> svc) => await svc.AddAsync(msg));
 
-app.MapGet("/msg/all", (IMessageSvc svc) => svc.GetAllMessagesAsync());
+app.MapGet("/msg/all", (ICrudSvc<Message> svc) => svc.GetAllAsync());
 
-app.MapGet("/msg/{id:long}", async Task<Results<Ok<Message>, NotFound>> (int id, IMessageSvc svc) =>
+app.MapGet("/msg/{id:long}", async Task<Results<Ok<Message>, NotFound>> (int id, ICrudSvc<Message> svc) =>
 {
-    var msg = await svc.GetMessageAsync(id);
+    var msg = await svc.GetAsync(id);
     return msg is null
         ? TypedResults.NotFound()
         : TypedResults.Ok(msg);
 });
 
-app.MapDelete("/msg/{id:long}", async Task<Results<NoContent, NotFound>> (int id, IMessageSvc svc) =>
+app.MapDelete("/msg/{id:long}", async Task<Results<NoContent, NotFound>> (int id, ICrudSvc<Message> svc) =>
 {
-    if ( await svc.DeleteMessageAsync(id))
+    if ( await svc.DeleteAsync(id))
     {
         return TypedResults.NoContent();
     }

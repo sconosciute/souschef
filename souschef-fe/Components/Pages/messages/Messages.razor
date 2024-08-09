@@ -1,7 +1,7 @@
 @page "/messages"
 @rendermode InteractiveServer
 @using souschef_fe.Services
-@inject IMessageSvc MessageService
+@inject ICrudSvc<Message> MessageService
 @inject ILogger<ClientMessageService> Logger
 
 @using souschef_core.Model
@@ -46,15 +46,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _messages = await MessageService.GetAllMessagesAsync();
+        _messages = await MessageService.GetAllAsync();
     }
 
     private async Task HandleSubmit()
     {
         if (!string.IsNullOrWhiteSpace(NewMsg.MsgText))
         {
-            await MessageService.AddMessageAsync(NewMsg);
-            _messages = await MessageService.GetAllMessagesAsync();
+            await MessageService.AddAsync(NewMsg);
+            _messages = await MessageService.GetAllAsync();
             NewMsg = new Message(); // Reset the form
         }
         else
