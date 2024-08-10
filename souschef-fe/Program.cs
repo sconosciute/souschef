@@ -13,6 +13,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<ICrudSvc<Message>, ClientMessageService>();
+
+builder.Services.AddScoped<ICrudSvc<User>, ClientUserService>();
+
 builder.Services.AddHttpClient("WebAPI",
     client => client.BaseAddress =
         new Uri(builder.Configuration["BackendUrl"] ?? throw new MissingUriException("Souschef-fe client base address")));

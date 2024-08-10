@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.RegularExpressions;
 using souschef_core.Model;
 using souschef_core.Services;
 
@@ -23,9 +24,11 @@ public class ClientUserService(HttpClient api) : ICrudSvc<User>
         return await api.GetFromJsonAsync<List<User>>($"{Uri}/all") ?? [];
     }
 
-    public async Task<User?> AddAsync(User? ent)
+    public async Task<User?> AddAsync(User? user)
     {
-        var res = await api.PostAsJsonAsync(Uri, ent);
+        // user.Photo.Initialize();
+        var res = await api.PostAsJsonAsync(Uri, user);
+        // var res = await api.PostAsync(user);
         res.EnsureSuccessStatusCode();
         return await res.Content.ReadFromJsonAsync<User>();
     }
