@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using FastEndpoints;
+using FastEndpoints.Security;
 using Microsoft.EntityFrameworkCore;
 using souschef_be.models;
 using souschef_be.Services;
@@ -14,11 +15,14 @@ builder.Logging.AddDebug();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddFastEndpoints();
+builder.Services
+    .AddAuthenticationJwtBearer(s => s.SigningKey = System.Environment.GetEnvironmentVariable("JWT_KEY"))
+    .AddAuthorization()
+    .AddFastEndpoints();
 
 builder.Services.AddDbContext<DbContext, SouschefContext>();
 builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
-builder.Services.AddScoped<ICrudSvc<User>, PgCrudSvcComponent<User>>();
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 
@@ -32,11 +36,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseFastEndpoints();
-
+app.UseAuthentication()
+    .UseAuthorization()
+    .UseFastEndpoints();
 
 app.Run();
-
-
-
-

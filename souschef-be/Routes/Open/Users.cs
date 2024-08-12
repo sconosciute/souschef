@@ -1,10 +1,12 @@
-﻿namespace souschef_be.Routes.Open;
+﻿using souschef_be.Services;
+
+namespace souschef_be.Routes.Open;
 
 using FastEndpoints;
 using souschef_core.Model;
 using souschef_core.Services;
 
-public class CreateUser(ICrudSvc<User> userSvc) : Endpoint<User>
+public class CreateUser(UserService userSvc) : Endpoint<User>
 {
     public override void Configure()
     {
