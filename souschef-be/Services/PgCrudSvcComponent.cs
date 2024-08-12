@@ -22,19 +22,23 @@ public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, DbCont
         return await _set.ToListAsync();
     }
 
-    public async Task<T?> UpdateAsync(T? updated)
+    public async Task<T?> UpdateAsync(T? updated, long id)
     {
-        var current = updated is null ? null : await _set.FindAsync(updated);
+        var current = updated is null ? null : await _set.FindAsync(id);
         if (current is null)
         {
             return null;
         }
-        _set.Update(updated!);
+
+        _set.Entry(current).State = EntityState.Detached;
+        _set.Attach(updated);
+        _set.Entry(updated).State = EntityState.Modified;
+        
+        // _set.Update(updated!);
         var committed = await db.SaveChangesAsync();
         return committed == 1
             ? updated
             : throw new DbApiFailureException($"Single update call returned {committed} rows");
-
     }
 
     public async Task<T?> AddAsync(T? ent)

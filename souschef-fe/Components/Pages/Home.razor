@@ -45,9 +45,13 @@
                     <h5 class="card-title mb-0">Create New User</h5>
                 </div>
                 <div class="card-body">
-                    <EditForm Model="@InsertUser" OnValidSubmit="HandleInsertSubmit">
+                    <EditForm Model="@InsertUser">
                         <DataAnnotationsValidator/>
                         <ValidationSummary/>
+                        <div class="mb-3">
+                            <label for="updateUserByID" class="form-label">User ID</label>
+                            <InputNumber id="updateUserByID" class="form-control" @bind-Value="@InsertUser.UserId"/>
+                        </div>
                         <div class="mb-3">
                             <label for="createUsername" class="form-label">Username</label>
                             <InputText id="createUsername" class="form-control" @bind-Value="@InsertUser.Username"/>
@@ -68,7 +72,8 @@
                             <label for="email" class="form-label">Email</label>
                             <InputText id="email" class="form-control" @bind-Value="@InsertUser.Email"/>
                         </div>
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary" @onclick="HandleInsertSubmit">Create</button>
+                        <button type="submit" class="btn btn-primary" @onclick="HandleUpdate">Update</button>
                     </EditForm>
                 </div>
             </div>
@@ -121,11 +126,10 @@
     {
         showUser = true;
 
+        InsertUser.UserId = 0;
 
-        // byte[] photo = new byte[10];
-        // InsertUser.Photo = photo;
         await UserService.AddAsync(InsertUser);
-        // _user = await UserService.GetAsync(InsertUser.UserId);
+        
         
     }
 
@@ -135,5 +139,9 @@
         // await UserService.DeleteUserAsync(DeleteUser.UserId);
     }
 
+    private async Task HandleUpdate()
+    {
+        await UserService.UpdateAsync(InsertUser, InsertUser.UserId);
+    }
 
 }

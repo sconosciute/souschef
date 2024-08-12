@@ -33,9 +33,12 @@ public class ClientUserService(HttpClient api) : ICrudSvc<User>
         return await res.Content.ReadFromJsonAsync<User>();
     }
 
-    public async Task<User?> UpdateAsync(User? ent)
+    public async Task<User?> UpdateAsync(User? ent, long id)
     {
-        throw new NotImplementedException();
+        // var res = await api.PutAsJsonAsync(Uri, ent);
+        var res = await api.PutAsJsonAsync($"{Uri}/{id}", ent);
+        res.EnsureSuccessStatusCode();
+        return await res.Content.ReadFromJsonAsync<User>();
     }
 
     public async Task<bool> DeleteAsync(long id)

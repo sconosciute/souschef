@@ -56,7 +56,7 @@ public class UpdateMessage(ICrudSvc<Message> messageSvc) : Endpoint<Message>
 
     public override async Task HandleAsync(Message req, CancellationToken ct)
     {
-        await SendAsync(await messageSvc.UpdateAsync(req), cancellation: ct);
+        await SendAsync(await messageSvc.UpdateAsync(req, req.MsgId), cancellation: ct);
     }
 }
 

@@ -50,13 +50,14 @@ public class UpdateUser(ICrudSvc<User> userSvc) : Endpoint<User>
 {
     public override void Configure()
     {
-        Put("/user");
+        // Put("/user");
+        Put("/user/{@UserId}");
         AllowAnonymous();
     }
 
     public override async Task HandleAsync(User req, CancellationToken ct)
     {
-        await SendAsync(await userSvc.UpdateAsync(req), cancellation: ct);
+        await SendAsync(await userSvc.UpdateAsync(req, req.UserId), cancellation: ct);
     }
 }
 

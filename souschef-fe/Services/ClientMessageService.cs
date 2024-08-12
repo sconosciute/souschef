@@ -25,7 +25,7 @@ public class ClientMessageService(HttpClient api) : ICrudSvc<Message>
         return await res.Content.ReadFromJsonAsync<Message>();
     }
 
-    public async Task<Message?> UpdateAsync(Message? ent)
+    public async Task<Message?> UpdateAsync(Message? ent, long id)
     {
         throw new NotImplementedException();
     }
