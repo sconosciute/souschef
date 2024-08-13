@@ -265,6 +265,7 @@ public partial class SouschefContext : DbContext
             entity.Property(e => e.Lastname).HasColumnName("lastname");
             entity.Property(e => e.Photo).HasColumnName("photo");
             entity.Property(e => e.Username).HasColumnName("username");
+            entity.Property(e => e.HashedPass).HasColumnName("pw_hash");
         });
 
         modelBuilder.Entity<Role>(entity =>

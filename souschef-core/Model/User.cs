@@ -7,6 +7,8 @@ public partial class User : IDbModel
     public byte[]? Photo { get; set; }
 
     public string? Username { get; set; }
+    
+    public string HashedPass { get; set; }
 
     public string? DisplayName { get; set; }
 

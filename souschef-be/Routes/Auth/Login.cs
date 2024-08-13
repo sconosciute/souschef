@@ -3,6 +3,7 @@ using souschef_be.models;
 using souschef_be.Services;
 using souschef_core.Model.DTO;
 using souschef_core.Services;
+using BC = BCrypt.Net.BCrypt;
 
 namespace souschef_be.Routes.Auth;
 
@@ -23,6 +24,15 @@ public class Login(UserService svc, IJwtService jwt) : Endpoint<AuthRequest, Aut
             return;
         }
 
-        await SendAsync(new AuthResponse(user.UserId, user.Username!, jwt.GenerateToken(user, ct)));
+        if (BC.Verify(req.Password, user.HashedPass))
+        {
+            await SendAsync(new AuthResponse(user.UserId, user.Username!, jwt.GenerateToken(user, ct)));
+        }
+        else
+        {
+            await SendUnauthorizedAsync();
+        }
+
+        
     }
 }
