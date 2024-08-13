@@ -9,8 +9,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace souschef_be.Services;
 
-public class JwtUtil(UserService userSvc, IConfiguration config) : IJwtUtil
+public class JwtService(UserService userSvc, IConfiguration config) : IJwtService
 {
+    private SymmetricSecurityKey _key = new(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ??
+                                                                    throw new InvalidOperationException()));
     /// <summary>
     /// Generates a new JSON Web Token for the given user. Tokens are valid for 30 days.
     /// </summary>
@@ -21,15 +23,14 @@ public class JwtUtil(UserService userSvc, IConfiguration config) : IJwtUtil
     public string GenerateToken(User user, CancellationToken ct)
     {
         var tokinator = new JwtSecurityTokenHandler();
-        var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ??
-                                                                   throw new InvalidOperationException()));
-        var signature = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+        var signature = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub,
                 user.UserId.ToString() ?? throw new ArgumentNullException(nameof(user.UserId))),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Name, user.Username ?? throw new ArgumentNullException(nameof(user.Username)))
+            new Claim(ClaimTypes.Name, user.Username ?? throw new ArgumentNullException(nameof(user.Username))),
+            new Claim(ClaimTypes.Role, "authenticated")
         };
 
         var desc = new SecurityTokenDescriptor
@@ -44,17 +45,5 @@ public class JwtUtil(UserService userSvc, IConfiguration config) : IJwtUtil
 
         var token = tokinator.CreateToken(desc);
         return tokinator.WriteToken(token);
-    }
-
-    /// <summary>
-    /// Validates a given JSON Web Token.
-    /// </summary>
-    /// <param name="token">JWT to validate.</param>
-    /// <param name="username"></param>
-    /// <returns>User ID from token if valid or null if token is invalid.</returns>
-    public async Task<int?> ValidateToken(string token, string username)
-    {
-        throw new NotImplementedException();
-        return null;
     }
 }

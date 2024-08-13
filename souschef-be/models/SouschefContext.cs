@@ -49,6 +49,8 @@ public partial class SouschefContext : DbContext
     public virtual DbSet<Tag> Tags { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    
+    public virtual DbSet<Role> Roles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseNpgsql(Source);
@@ -263,6 +265,36 @@ public partial class SouschefContext : DbContext
             entity.Property(e => e.Lastname).HasColumnName("lastname");
             entity.Property(e => e.Photo).HasColumnName("photo");
             entity.Property(e => e.Username).HasColumnName("username");
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.RoleId).HasName("roles_pkey");
+
+            entity.ToTable("roles");
+
+            entity.Property(e => e.RoleId)
+                .UseIdentityAlwaysColumn()
+                .HasColumnName("role_id");
+            entity.Property(e => e.RoleName).HasColumnName("role_name");
+        });
+
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(e => new { e.RoleId, e.UserId }).HasName("user_role_pkey");
+
+            entity.ToTable("user_role");
+
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(e => e.User).WithMany(d => d.Roles)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("user_role_fkey");
+
+            entity.HasOne(e => e.Role).WithMany(d => d.UserRoles)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("role_user_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

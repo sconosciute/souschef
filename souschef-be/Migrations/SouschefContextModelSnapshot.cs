@@ -10,7 +10,7 @@ using souschef_core.Model;
 
 #nullable disable
 
-namespace souschef_be.Migrations.Souschef
+namespace souschef_be.Migrations
 {
     [DbContext(typeof(SouschefContext))]
     partial class SouschefContextModelSnapshot : ModelSnapshot
@@ -276,6 +276,26 @@ namespace souschef_be.Migrations.Souschef
                     b.ToTable("recipes", (string)null);
                 });
 
+            modelBuilder.Entity("souschef_core.Model.Role", b =>
+                {
+                    b.Property<long>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("role_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<long>("RoleId"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("role_name");
+
+                    b.HasKey("RoleId")
+                        .HasName("roles_pkey");
+
+                    b.ToTable("roles", (string)null);
+                });
+
             modelBuilder.Entity("souschef_core.Model.Tag", b =>
                 {
                     b.Property<long>("TagId")
@@ -341,6 +361,24 @@ namespace souschef_be.Migrations.Souschef
                         .IsUnique();
 
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("souschef_core.Model.UserRole", b =>
+                {
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("role_id");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("RoleId", "UserId")
+                        .HasName("user_role_pkey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("user_role", (string)null);
                 });
 
             modelBuilder.Entity("souschef_core.Model.Access", b =>
@@ -462,6 +500,27 @@ namespace souschef_be.Migrations.Souschef
                     b.Navigation("AuthorNavigation");
                 });
 
+            modelBuilder.Entity("souschef_core.Model.UserRole", b =>
+                {
+                    b.HasOne("souschef_core.Model.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("role_user_fkey");
+
+                    b.HasOne("souschef_core.Model.User", "User")
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("user_role_fkey");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("souschef_core.Model.Ingredient", b =>
                 {
                     b.Navigation("IngrRecipes");
@@ -481,6 +540,11 @@ namespace souschef_be.Migrations.Souschef
                     b.Navigation("Ratings");
                 });
 
+            modelBuilder.Entity("souschef_core.Model.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("souschef_core.Model.User", b =>
                 {
                     b.Navigation("Accesses");
@@ -488,6 +552,8 @@ namespace souschef_be.Migrations.Souschef
                     b.Navigation("Ratings");
 
                     b.Navigation("Recipes");
+
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

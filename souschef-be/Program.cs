@@ -1,5 +1,8 @@
+using System.Text;
 using FastEndpoints;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using souschef_be.models;
 using souschef_be.Services;
 using souschef_core.Model;
@@ -15,7 +18,23 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
     .AddAuthentication()
-    .AddJwtBearer();
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:key"] ??
+                                                                throw new InvalidOperationException()))
+        };
+    });
+builder.Services.AddAuthorization();
+
 builder.Services.AddFastEndpoints();
 
 builder.Services.AddDbContext<DbContext, SouschefContext>();

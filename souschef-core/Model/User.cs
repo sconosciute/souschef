@@ -21,4 +21,6 @@ public partial class User : IDbModel
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
     public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+
+    public virtual ICollection<UserRole> Roles { get; set; } = new List<UserRole>();
 }

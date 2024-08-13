@@ -5,10 +5,10 @@ using souschef_core.Model;
 
 #nullable disable
 
-namespace souschef_be.Migrations.Souschef
+namespace souschef_be.Migrations
 {
     /// <inheritdoc />
-    public partial class messageIdLong : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,6 +58,19 @@ namespace souschef_be.Migrations.Souschef
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.MsgId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "roles",
+                columns: table => new
+                {
+                    role_id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
+                    role_name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("roles_pkey", x => x.role_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,6 +125,30 @@ namespace souschef_be.Migrations.Souschef
                         column: x => x.author,
                         principalTable: "users",
                         principalColumn: "user_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_role",
+                columns: table => new
+                {
+                    role_id = table.Column<long>(type: "bigint", nullable: false),
+                    user_id = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("user_role_pkey", x => new { x.role_id, x.user_id });
+                    table.ForeignKey(
+                        name: "role_user_fkey",
+                        column: x => x.role_id,
+                        principalTable: "roles",
+                        principalColumn: "role_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "user_role_fkey",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -300,6 +337,11 @@ namespace souschef_be.Migrations.Souschef
                 column: "author");
 
             migrationBuilder.CreateIndex(
+                name: "IX_user_role_user_id",
+                table: "user_role",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "users_display_name_key",
                 table: "users",
                 column: "display_name",
@@ -343,6 +385,9 @@ namespace souschef_be.Migrations.Souschef
                 name: "tags");
 
             migrationBuilder.DropTable(
+                name: "user_role");
+
+            migrationBuilder.DropTable(
                 name: "ingredients");
 
             migrationBuilder.DropTable(
@@ -350,6 +395,9 @@ namespace souschef_be.Migrations.Souschef
 
             migrationBuilder.DropTable(
                 name: "recipes");
+
+            migrationBuilder.DropTable(
+                name: "roles");
 
             migrationBuilder.DropTable(
                 name: "users");
