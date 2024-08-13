@@ -57,7 +57,7 @@ public class UpdateMeasurement(ICrudSvc<Measurement> measurSvc) : Endpoint<Measu
 
     public override async Task HandleAsync(Measurement req, CancellationToken ct)
     {
-        await SendAsync(await measurSvc.UpdateAsync(req), cancellation: ct);
+        await SendAsync(await measurSvc.UpdateAsync(req, req.MeasId), cancellation: ct);
     }
 }
 public class DeleteMeasurement(ICrudSvc<Measurement> measurSvc) : Endpoint<Measurement>

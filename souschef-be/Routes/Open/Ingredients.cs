@@ -56,7 +56,7 @@ public class UpdateIngredient(ICrudSvc<Ingredient> ingredientSvc) : Endpoint<Ing
 
     public override async Task HandleAsync(Ingredient req, CancellationToken ct)
     {
-        await SendAsync(await ingredientSvc.UpdateAsync(req), cancellation: ct);
+        await SendAsync(await ingredientSvc.UpdateAsync(req, req.IngrId), cancellation: ct);
     }
 }
 public class DeleteIngredient(ICrudSvc<Ingredient> ingredientSvc) : Endpoint<Ingredient>
