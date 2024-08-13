@@ -18,6 +18,7 @@ builder.Services.AddFastEndpoints();
 
 builder.Services.AddDbContext<DbContext, SouschefContext>();
 builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
+builder.Services.AddScoped<ICrudSvc<Ingredient>, PgCrudSvcComponent<Ingredient>>();
 
 var app = builder.Build();
 
