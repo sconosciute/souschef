@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using FastEndpoints;
-using FastEndpoints.Security;
 using Microsoft.EntityFrameworkCore;
 using souschef_be.models;
 using souschef_be.Services;
@@ -16,9 +14,9 @@ builder.Logging.AddDebug();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
-    .AddAuthenticationJwtBearer(s => s.SigningKey = System.Environment.GetEnvironmentVariable("JWT_KEY"))
-    .AddAuthorization()
-    .AddFastEndpoints();
+    .AddAuthentication()
+    .AddJwtBearer();
+builder.Services.AddFastEndpoints();
 
 builder.Services.AddDbContext<DbContext, SouschefContext>();
 builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
@@ -36,8 +34,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication()
-    .UseAuthorization()
-    .UseFastEndpoints();
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseFastEndpoints();
 
 app.Run();
