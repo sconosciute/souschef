@@ -19,6 +19,7 @@ builder.Services.AddFastEndpoints();
 builder.Services.AddDbContext<DbContext, SouschefContext>();
 builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
 builder.Services.AddScoped<ICrudSvc<User>, PgCrudSvcComponent<User>>();
+builder.Services.AddScoped<ICrudSvc<Tag>, PgCrudSvcComponent<Tag>>();
 
 var app = builder.Build();
 

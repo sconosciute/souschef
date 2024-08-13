@@ -5,37 +5,37 @@ using souschef_core.Services;
 
 namespace souschef_fe.Services;
 
-public class ClientUserService(HttpClient api) : ICrudSvc<User>
+public class ClientTagService(HttpClient api) : ICrudSvc<Tag>
 {
-    private const string Uri = "http://localhost:5293/user";
+    private const string Uri = "http://localhost:5293/tag";
     
     
     
-    public async Task<User?> GetAsync(long id)
+    public async Task<Tag?> GetAsync(long id)
     {
-        return await api.GetFromJsonAsync<User>($"{Uri}/{id}");
+        return await api.GetFromJsonAsync<Tag>($"{Uri}/{id}");
     }
 
-    public async Task<List<User>?> GetAllAsync()
+    public async Task<List<Tag>?> GetAllAsync()
     {
-        return await api.GetFromJsonAsync<List<User>>($"{Uri}/all") ?? [];
+        return await api.GetFromJsonAsync<List<Tag>>($"{Uri}/all") ?? [];
     }
 
-    public async Task<User?> AddAsync(User? user)
+    public async Task<Tag?> AddAsync(Tag? tag)
     {
         // user.Photo.Initialize();
-        var res = await api.PostAsJsonAsync(Uri, user);
+        var res = await api.PostAsJsonAsync(Uri, tag);
         // var res = await api.PostAsync(user);
         res.EnsureSuccessStatusCode();
-        return await res.Content.ReadFromJsonAsync<User>();
+        return await res.Content.ReadFromJsonAsync<Tag>();
     }
 
-    public async Task<User?> UpdateAsync(User? ent, long id)
+    public async Task<Tag?> UpdateAsync(Tag? tag, long id)
     {
         // var res = await api.PutAsJsonAsync(Uri, ent);
-        var res = await api.PutAsJsonAsync($"{Uri}/{id}", ent);
+        var res = await api.PutAsJsonAsync($"{Uri}/{id}", tag);
         res.EnsureSuccessStatusCode();
-        return await res.Content.ReadFromJsonAsync<User>();
+        return await res.Content.ReadFromJsonAsync<Tag>();
     }
 
     public async Task<bool> DeleteAsync(long id)

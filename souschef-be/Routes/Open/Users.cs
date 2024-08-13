@@ -36,7 +36,7 @@ public class GetAllUsers(ICrudSvc<User> userSvc) : EndpointWithoutRequest
 {
     public override void Configure()
     {
-        Get("/user");
+        Get("/user/all");
         AllowAnonymous();
     }
 
