@@ -38,7 +38,7 @@ public class GetAllUsers(UserService userSvc) : EndpointWithoutRequest
 {
     public override void Configure()
     {
-        Get("/user");
+        Get("/user/all");
         AllowAnonymous();
     }
 

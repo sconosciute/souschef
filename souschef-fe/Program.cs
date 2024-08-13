@@ -16,6 +16,10 @@ builder.Services.AddScoped<ICrudSvc<Message>, ClientMessageService>();
 
 builder.Services.AddScoped<ICrudSvc<User>, ClientUserService>();
 
+builder.Services.AddScoped<ICrudSvc<Tag>, ClientTagService>();
+
+// builder.Services.AddScoped<ICrudSvc<Ingredient>, ClientIngredientService>();
+
 builder.Services.AddHttpClient("WebAPI",
     client => client.BaseAddress =
         new Uri(builder.Configuration["BackendUrl"] ?? throw new MissingUriException("Souschef-fe client base address")));
