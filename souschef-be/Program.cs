@@ -18,8 +18,6 @@ builder.Services.AddFastEndpoints();
 
 builder.Services.AddDbContext<DbContext, SouschefContext>();
 builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
-builder.Services.AddScoped<ICrudSvc<User>, PgCrudSvcComponent<User>>();
-builder.Services.AddScoped<ICrudSvc<Tag>, PgCrudSvcComponent<Tag>>();
 builder.Services.AddScoped<ICrudSvc<Ingredient>, PgCrudSvcComponent<Ingredient>>();
 builder.Services.AddScoped<ICrudSvc<Measurement>, PgCrudSvcComponent<Measurement>>();
 
