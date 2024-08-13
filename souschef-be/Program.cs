@@ -20,6 +20,10 @@ builder.Services.AddDbContext<DbContext, SouschefContext>();
 builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
 builder.Services.AddScoped<ICrudSvc<Ingredient>, PgCrudSvcComponent<Ingredient>>();
 builder.Services.AddScoped<ICrudSvc<Measurement>, PgCrudSvcComponent<Measurement>>();
+builder.Services.AddScoped<ICrudSvc<Recipe>, PgCrudSvcComponent<Recipe>>();
+builder.Services.AddScoped<ICrudSvc<Tag>, PgCrudSvcComponent<Tag>>();
+builder.Services.AddScoped<ICrudSvc<User>, PgCrudSvcComponent<User>>();
+
 
 var app = builder.Build();
 

@@ -36,7 +36,7 @@ public class GetAllRecipies(ICrudSvc<Recipe> recipeSvc) : EndpointWithoutRequest
 {
     public override void Configure()
     {
-        Get("/ingr");
+        Get("/recipe");
         AllowAnonymous();
     }
 
@@ -50,7 +50,7 @@ public class UpdateRecipe(ICrudSvc<Recipe> recipeSvc) : Endpoint<Recipe>
 {
     public override void Configure()
     {
-        Put("/rec");
+        Put("/recipe");
         AllowAnonymous();
     }
 
