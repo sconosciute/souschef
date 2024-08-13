@@ -37,9 +37,12 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddFastEndpoints();
 
+builder.Services.AddCors();
+
 builder.Services.AddDbContext<DbContext, SouschefContext>();
 builder.Services.AddScoped<ICrudSvc<Message>, PgCrudSvcComponent<Message>>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddSingleton<IJwtService, JwtService>();
 
 var app = builder.Build();
 

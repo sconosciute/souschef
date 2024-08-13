@@ -20,7 +20,7 @@ public class CreateUser(UserService userSvc) : Endpoint<User>
     }
 }
 
-public class GetUser(ICrudSvc<User> userSvc) : Endpoint<User>
+public class GetUser(UserService userSvc) : Endpoint<User>
 {
     public override void Configure()
     {
@@ -34,7 +34,7 @@ public class GetUser(ICrudSvc<User> userSvc) : Endpoint<User>
     }
 }
 
-public class GetAllUsers(ICrudSvc<User> userSvc) : EndpointWithoutRequest
+public class GetAllUsers(UserService userSvc) : EndpointWithoutRequest
 {
     public override void Configure()
     {
@@ -48,7 +48,7 @@ public class GetAllUsers(ICrudSvc<User> userSvc) : EndpointWithoutRequest
     }
 }
 
-public class UpdateUser(ICrudSvc<User> userSvc) : Endpoint<User>
+public class UpdateUser(UserService userSvc) : Endpoint<User>
 {
     public override void Configure()
     {
@@ -63,7 +63,7 @@ public class UpdateUser(ICrudSvc<User> userSvc) : Endpoint<User>
     }
 }
 
-public class DeleteUser(ICrudSvc<User> userSvc) : Endpoint<User>
+public class DeleteUser(UserService userSvc) : Endpoint<User>
 {
     public override void Configure()
     {

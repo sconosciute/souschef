@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace souschef_be.Services;
 
-public class JwtService(UserService userSvc, IConfiguration config) : IJwtService
+public class JwtService(IConfiguration config) : IJwtService
 {
     private SymmetricSecurityKey _key = new(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ??
                                                                     throw new InvalidOperationException()));
@@ -24,14 +24,19 @@ public class JwtService(UserService userSvc, IConfiguration config) : IJwtServic
     {
         var tokinator = new JwtSecurityTokenHandler();
         var signature = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
+        
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub,
                 user.UserId.ToString() ?? throw new ArgumentNullException(nameof(user.UserId))),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Name, user.Username ?? throw new ArgumentNullException(nameof(user.Username))),
-            new Claim(ClaimTypes.Role, "authenticated")
+            new Claim(ClaimTypes.Name, user.Username ?? throw new ArgumentNullException(nameof(user.Username)))
         };
+        
+        foreach (var role in user.Roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role.Role.RoleName));
+        }
 
         var desc = new SecurityTokenDescriptor
         {
