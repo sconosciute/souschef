@@ -9,7 +9,7 @@ public class GetThinRecipe(ThinRecipeService recipeSvc) : Endpoint<ThinRecipe>
 {
     public override void Configure()
     {
-        Get("/recipe");
+        Get("/thinrecipe");
         AllowAnonymous();
     }
 
