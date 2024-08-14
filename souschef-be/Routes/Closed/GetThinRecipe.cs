@@ -5,7 +5,7 @@ using souschef_core.Model.DTO;
 
 namespace souschef_be.Routes.Closed;
 
-public class GetRecipe(SkinnyRecipeService recipeSvc) : Endpoint<SkinnyRecipe>
+public class GetThinRecipe(ThinRecipeService recipeSvc) : Endpoint<ThinRecipe>
 {
     public override void Configure()
     {
@@ -13,7 +13,7 @@ public class GetRecipe(SkinnyRecipeService recipeSvc) : Endpoint<SkinnyRecipe>
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(SkinnyRecipe req, CancellationToken ct)
+    public override async Task HandleAsync(ThinRecipe req, CancellationToken ct)
     {
         var recipes = await recipeSvc.GetRecipeInfoBasic(req.id);
     }
