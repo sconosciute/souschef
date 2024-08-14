@@ -1,6 +1,6 @@
 using System.Text;
 using FastEndpoints;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using FastEndpoints.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using souschef_be.models;
@@ -35,7 +35,7 @@ builder.Services
     });
 builder.Services.AddAuthorization();
 
-builder.Services.AddFastEndpoints();
+builder.Services.AddFastEndpoints().SwaggerDocument();
 
 builder.Services.AddCors();
 
@@ -51,19 +51,20 @@ builder.Services.AddScoped<ICrudSvc<Tag>, PgCrudSvcComponent<Tag>>();
 
 var app = builder.Build();
 
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
 
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseFastEndpoints();
+
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwaggerGen();
+}
+
+
 
 app.Run();
