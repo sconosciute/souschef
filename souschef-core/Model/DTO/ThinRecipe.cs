@@ -1,6 +1,6 @@
 ﻿namespace souschef_core.Model.DTO;
 
-public class SkinnyRecipe
+public class ThinRecipe
 {
     public long id { get; set; }
     public string? name { get; set; }
