@@ -1,12 +1,14 @@
-﻿namespace souschef_core.Model;
+﻿using souschef_core.Model.DTO;
 
-public partial class Recipe : IDbModel
+namespace souschef_core.Model;
+
+public partial class Recipe : IDbModel, IHumanFriendly<HumanReadableRecipe>
 {
     public long RecipeId { get; set; }
 
     public long? Author { get; set; }
 
-    public bool? Public { get; set; }
+    public bool Public { get; set; }
 
     public string? Name { get; set; }
 
@@ -23,4 +25,19 @@ public partial class Recipe : IDbModel
     public virtual ICollection<IngrRecipe> IngrRecipes { get; set; } = new List<IngrRecipe>();
 
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+    public HumanReadableRecipe ToHumanReadable()
+    {
+        var ingredients = IngrRecipes.Select(ir => ir.ToHumanReadable()).ToList();
+        return new HumanReadableRecipe
+        {
+            RecipeId = RecipeId,
+            AuthorId = Author,
+            Public = Public,
+            Name = Name!,
+            Description = Description!,
+            Directions = Directions!,
+            Ingredients = ingredients
+            //TODO: Figure out wtf to do about the tags
+        };
+    }
 }

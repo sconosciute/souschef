@@ -4,7 +4,7 @@ public record HumanReadableRecipe
 {
     public long RecipeId { get; init; }
 
-    public long AuthorId { get; init; }
+    public long? AuthorId { get; init; }
     
     public string? AuthorName { get; init; }
 
