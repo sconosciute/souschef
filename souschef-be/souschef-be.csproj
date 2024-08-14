@@ -29,10 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Routes\Closed\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\souschef-core\souschef-core.csproj" />
     </ItemGroup>
 
