@@ -9,12 +9,12 @@ public class GetThinRecipe(ThinRecipeService recipeSvc) : Endpoint<ThinRecipe>
 {
     public override void Configure()
     {
-        Get("/thinrecipe");
+        Get("/thinrecipe/{@recipe_id}", recId => new {recId.id});
         AllowAnonymous();
     }
 
     public override async Task HandleAsync(ThinRecipe req, CancellationToken ct)
     {
-        var recipes = await recipeSvc.GetRecipeInfoBasic(req.id);
+        await SendAsync(await recipeSvc.GetRecipeInfoBasic(req.id), cancellation: ct);
     }
 }
