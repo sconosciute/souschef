@@ -5,4 +5,5 @@ public record QueryParams
     public const string Query = "q";
     public const string Page = "page";
     public const string PageSize = "pageSize";
+    public const string Tag = "tag";
 }

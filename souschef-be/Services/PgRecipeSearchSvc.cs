@@ -7,16 +7,18 @@ namespace souschef_be.Services;
 
 public class PgRecipeSearchSvc(DbContext db) : ISearchSvc
 {
-    public async Task<List<ThinRecipe>> SearchByName(string name)
+    public async Task<List<ThinRecipe>> SearchByName(string name, int page, int pageSize)
     {
         return await db.Set<Recipe>()
             .Where(r => r.Name != null && r.Name.Contains(name))
             .Select(r => new ThinRecipe
                 { id = r.RecipeId, name = r.Name, description = r.Description, tags = r.GetTagEntities().Result })
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
 
-    public async Task<List<ThinRecipe>> SearchByTags(List<long> tagIds)
+    public async Task<List<ThinRecipe>> SearchByTags(List<long> tagIds, int page, int pageSize)
     {
         return await db.Set<Recipe>()
             .Where(r => r.Tags != null && r.Tags.Any(tagIds.Contains))
@@ -24,6 +26,8 @@ public class PgRecipeSearchSvc(DbContext db) : ISearchSvc
             {
                 id = r.RecipeId, description = r.Description, name = r.Name, tags = r.GetTagEntities().Result
             })
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
 }
