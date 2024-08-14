@@ -4,7 +4,7 @@ namespace souschef_core.Services;
 
 public interface ISearchSvc
 {
-    public Task<ThinRecipe?> SearchByName(string name);
+    public Task<List<ThinRecipe>> SearchByName(string name);
 
-    public Task<ThinRecipe?> SearchByTags(List<long> tagIds);
+    public Task<List<ThinRecipe>> SearchByTags(List<long> tagIds);
 }

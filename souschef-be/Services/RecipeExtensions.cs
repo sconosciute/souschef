@@ -7,7 +7,7 @@ namespace souschef_be.Services;
 
 public static class RecipeExtensions
 {
-    public static HumanReadableRecipe ToHumanReadable(this Recipe recipe)
+    public async static Task<HumanReadableRecipe> ToHumanReadable(this Recipe recipe)
     {
         var db = new SouschefContext();
         var tags = db.Set<Tag>();
@@ -22,7 +22,13 @@ public static class RecipeExtensions
             Description = recipe.Description!,
             Directions = recipe.Directions!,
             Ingredients = ingredients,
-            Tags = tags.Where(t => recipe.Tags != null && recipe.Tags.Contains(t.TagId)).ToListAsync().Result
+            Tags = await tags.Where(t => recipe.Tags != null && recipe.Tags.Contains(t.TagId)).ToListAsync()
         };
+    }
+
+    public async static Task<List<Tag>> GetTagEntities(this Recipe recipe)
+    {
+        var db = new SouschefContext();
+        return await db.Set<Tag>().Where(t => recipe.Tags != null && recipe.Tags.Contains(t.TagId)).ToListAsync();
     }
 }
