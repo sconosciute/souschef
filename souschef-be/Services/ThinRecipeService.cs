@@ -13,10 +13,9 @@ public class ThinRecipeService(ILogger<PgCrudSvcComponent<Recipe>> logger, DbCon
         var recipe = _db.Set<Recipe>()
             .Single(i => i.RecipeId == recipeId);
         
-        var output = new ThinRecipe{name = recipe.Name, description = recipe.Description, tags = recipe.Tags};
+        var output = new ThinRecipe{id = recipe.RecipeId, name = recipe.Name, description = recipe.Description, tags = recipe.Tags};
         
         return output;
-
-
+        
     }
 }
