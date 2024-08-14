@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using souschef_core.Exceptions;
 using souschef_core.Model;
+using souschef_core.Model.DTO;
 using souschef_core.Services;
 using souschef_fe.Components;
 using souschef_fe.Services;
@@ -19,6 +20,8 @@ builder.Services.AddScoped<ICrudSvc<User>, ClientUserService>();
 builder.Services.AddScoped<ICrudSvc<Tag>, ClientTagService>();
 
 builder.Services.AddScoped<ISearchSvc, ClientSearchService>();
+
+builder.Services.AddScoped<ICrudSvc<Recipe>, ClientRecipeService>();
 
 // builder.Services.AddScoped<ICrudSvc<Ingredient>, ClientIngredientService>();
 

@@ -1,5 +1,32 @@
-﻿<h3>ViewRecipe</h3>
+﻿@page "/search/{RecipeId:long}"
+@using souschef_core.Model.DTO
+@using souschef_core.Model
+@using souschef_core.Services
+
+@inject ICrudSvc<Recipe> RecService
+
+
+@* <h3>ViewRecipe</h3> *@
+
+@if (getRec == null)
+{
+<p>Loading recipe details...</p>
+}
+else
+{
+    <h3 style="text-align: center">@getRec.Name</h3>
+    @* <h4 style="text-align: center">@getRec.Author</h4> *@
+    <p style="text-align: center">@getRec.Description</p>
+}
+
 
 @code {
-    
+    [Parameter] public long RecipeId { get; set; }
+
+    private Recipe getRec;
+
+    protected override async Task OnInitializedAsync()
+    {
+        getRec = await RecService.GetAsync(RecipeId);
+    }
 }

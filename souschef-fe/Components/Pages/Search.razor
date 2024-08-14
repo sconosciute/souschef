@@ -5,6 +5,8 @@
 @using souschef_core.Services
 
 @inject ISearchSvc SearchService
+@inject NavigationManager NavigationManager
+
 
 <h1 style="text-align: center">Search For a Recipe!</h1>
 
@@ -99,7 +101,7 @@
 
     private void ViewRecipe(long recipeId)
     {
-        
+        NavigationManager.NavigateTo($"/search/{recipeId}");
     }
 
 }
