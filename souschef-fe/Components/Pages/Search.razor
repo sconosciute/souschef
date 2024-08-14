@@ -1,0 +1,105 @@
+﻿@page "/search"
+@rendermode InteractiveServer
+@using souschef_core.Model
+@using souschef_core.Model.DTO
+@using souschef_core.Services
+
+@inject ISearchSvc SearchService
+
+<h1 style="text-align: center">Search For a Recipe!</h1>
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="row w-100 justify-content-center">
+        <div class="col-auto">
+            <div class="card text-center" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Search By Keyword</h5>
+                    <EditForm Model="@SR" OnValidSubmit="HandleKeywordSearch">
+                        <DataAnnotationsValidator/>
+                        <div class="mb-3">
+                            <label for="keyword" class="form-label">Keyword</label>
+                            <InputText id="keyword" class="form-control" @bind-Value="@SR.keyword"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="card text-center" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Search By Tags</h5>
+                    <EditForm Model="@Tags" OnValidSubmit="HandleTagSearch">
+                        <DataAnnotationsValidator/>
+                        <p class="card-text">Enter a comma separated list of tags to search for.</p>
+                        <div class="mb-3">
+                            <label for="tag" class="form-label">Tag</label>
+                            <InputText id="tag" class="form-control" @bind-Value="@Tags.tagString"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 style="text-align: center">Recipes!</h3>
+
+<div class="container">
+    <div class="row">
+        @if (_recipes != null)
+        {
+            @foreach (var recipe in _recipes)
+            {
+                <div class="col-md-3 mb-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">@recipe.name</h5>
+                            <p class="card-text">@recipe.description</p>
+                            @* <p class="card-text">@string.Join(", ", recipe.tags)</p> *@
+                            <button class="btn btn-primary" @onclick="() => ViewRecipe(recipe.id)">View</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center">
+                <p>No Recipes</p>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter] public SearchRecipe SR { get; set; } = new();
+
+    [Parameter] public SearchTags Tags { get; set; } = new();
+    // [Parameter] public SearchTags ST { get; set; } = new();
+
+    private List<ThinRecipe> _recipes;
+
+    private async Task HandleKeywordSearch()
+    {
+        _recipes = await SearchService.SearchByName(SR.keyword, 1, 4);
+    }
+
+    private async Task HandleTagSearch()
+    {
+        // SR.tags = new List<string>(Tags.tagString.Split(','));
+        
+
+        
+    }
+
+    private void ViewRecipe(long recipeId)
+    {
+        
+    }
+
+}
