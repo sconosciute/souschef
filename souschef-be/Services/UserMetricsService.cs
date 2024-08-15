@@ -8,7 +8,7 @@ namespace souschef_be.Services;
 public class UserMetricsService(DbContext db)
 {
     private readonly DbContext _db = db;
-    public async Task<UserMetrics> GetRecipeCount(int userId)
+    public async Task<UserMetrics> GetMetrics(long userId)
     {
         var userSet = _db.Set<User>();
         var recipeSet = _db.Set<Recipe>();
