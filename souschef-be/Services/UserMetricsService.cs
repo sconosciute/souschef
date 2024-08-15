@@ -34,13 +34,13 @@ public class UserMetricsService(DbContext db)
                 username = grouped.Key,
                 average_rating = grouped.Average(rt => rt.Rating1)
             };
-        
+        var avgRatingSingleAnswer = avgRating.Select(x => x.average_rating).FirstOrDefault();
+        var numRecipe = recipeCount.Select(x => x.recipe_count).FirstOrDefault();
         return new UserMetrics
         {
             UserId = userId,
-            AvgRating = avgRating{average_rating}
-        }
+            AvgRating = avgRatingSingleAnswer,
+            NumRecipe = numRecipe
+        };
     }
-    
-    
 }

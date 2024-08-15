@@ -4,7 +4,7 @@ public class UserMetrics
 {
     public long UserId { get; init; }
     
-    public float AvgRating { get; init; }
+    public System.Nullable<double> AvgRating { get; init; }
     
     public long NumRecipe { get; init; }
 }
