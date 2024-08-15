@@ -4,6 +4,8 @@
 @using souschef_core.Model.DTO
 @using souschef_core.Services
 
+@inject ICrudSvc<Tag> TagService
+
 @inject ISearchSvc SearchService
 @inject NavigationManager NavigationManager
 
@@ -84,7 +86,11 @@
     [Parameter] public SearchTags Tags { get; set; } = new();
     // [Parameter] public SearchTags ST { get; set; } = new();
 
+    private List<string> temp;
+
     private List<ThinRecipe> _recipes;
+
+    private List<Tag> _alltags;
 
     private async Task HandleKeywordSearch()
     {
@@ -94,9 +100,40 @@
     private async Task HandleTagSearch()
     {
         // SR.tags = new List<string>(Tags.tagString.Split(','));
-        
+        // temp = new List<string>(Tags.tagString.Split(','));
+        // var temp = Tags.tagString.Split(',').ToList();
+
+        var temp = Tags.tagString
+            .Split(',')
+            .Select(tag => tag.Trim())  // Trim whitespace from both ends of each tag
+            .ToList();
+
+        _alltags = await TagService.GetAllAsync();
+        SR.tags = new List<long>();
+
+        // Console.WriteLine("INPUT TAG: " + temp);
+        // foreach (var tag in temp)
+        // {
+        //     Console.WriteLine("INPUT TAG: " + tag);
+        // }
+
+
+        foreach (var in_tag in temp)
+        {
+            foreach (var tag in _alltags)
+            {
+                if (in_tag == tag.TagName)
+                {
+                    SR.tags.Add(tag.TagId);
+                    break;
+                }
+                    
+            }
+        }
 
         
+        
+        _recipes = await SearchService.SearchByTags(SR.tags, 1, 4);
     }
 
     private void ViewRecipe(long recipeId)

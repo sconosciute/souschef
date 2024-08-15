@@ -14,8 +14,29 @@ public class ClientSearchService(HttpClient api) : ISearchSvc
         return await api.GetFromJsonAsync<List<ThinRecipe>>(url) ?? new List<ThinRecipe>();
     }
 
+    // public async Task<List<ThinRecipe>> SearchByTags(List<long> tagIds, int page, int pageSize)
+    // {
+    //     // /recipe/tag?tags[]={tag}&page={resultsPage}&pageSize={ResultsPerPage}
+    //     // return null;
+    //
+    //     var url = $"{Uri}/tag?tags[]={tagIds}&page={page}&pageSize={pageSize}";
+    //     return await api.GetFromJsonAsync<List<ThinRecipe>>(url) ?? new List<ThinRecipe>();
+    // }
+    
     public async Task<List<ThinRecipe>> SearchByTags(List<long> tagIds, int page, int pageSize)
     {
-        return null;
+        
+        var tagQuery = string.Join("&", tagIds.Select(id => $"tag={id}"));
+     
+        var url = $"{Uri}/tag/?{tagQuery}&page={page}&pageSize={pageSize}";
+
+        Console.WriteLine("URL: " + url);
+
+        return await api.GetFromJsonAsync<List<ThinRecipe>>(url) ?? new List<ThinRecipe>();
     }
+
+
+
+
+    
 }
