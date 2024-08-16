@@ -23,5 +23,9 @@
         <Watch Include="**\*.razor" />
         <Watch Include="**\*.cshtml" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Components\SousChef\" />
+    </ItemGroup>
 
 </Project>
