@@ -26,13 +26,13 @@ public class Login(UserService svc, IJwtService jwt) : Endpoint<AuthRequest, Aut
 
         if (BC.Verify(req.Password, user.HashedPass))
         {
-            await SendAsync(new AuthResponse(user.UserId, user.Username!, jwt.GenerateToken(user, ct)));
+            await SendAsync(
+                new AuthResponse(user.UserId, user.Username!, user.DisplayName ?? user.Username!,
+                    jwt.GenerateToken(user, ct)), cancellation: ct);
         }
         else
         {
-            await SendUnauthorizedAsync();
+            await SendUnauthorizedAsync(cancellation: ct);
         }
-
-        
     }
 }

@@ -34,8 +34,10 @@ public class Register(UserService userSvc, IJwtService jwt) : Endpoint<RegisterU
             await SendErrorsAsync(500, ct);
             return;
         }
+
         var token = jwt.GenerateToken(newUser, ct);
 
-        await SendAsync(new AuthResponse(newUser.UserId, newUser.Username!, token));
+        await SendAsync(new AuthResponse(newUser.UserId, newUser.Username!, user.DisplayName ?? user.Username!, token),
+            cancellation: ct);
     }
 }
