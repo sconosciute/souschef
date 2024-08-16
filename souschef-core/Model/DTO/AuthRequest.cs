@@ -7,9 +7,13 @@ namespace souschef_core.Model.DTO;
 /// </summary>
 public class AuthRequest(string username, string password)
 {
-    [Required]
-    public string Username { get; init;  } = username;
+    public AuthRequest() : this(string.Empty, string.Empty)
+    {
+    }
 
     [Required]
-    public string Password { get; init; } = password;
+    public string Username { get; set;  } = username;
+
+    [Required]
+    public string Password { get; set; } = password;
 }

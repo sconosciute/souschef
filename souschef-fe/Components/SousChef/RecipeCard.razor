@@ -1,0 +1,7 @@
+@using souschef_core.Model.DTO
+@using souschef_fe.Components.Basic
+<Card Title="@Recipe.Name" BodyText="@Recipe.Description" />
+
+@code {
+    HumanReadableRecipe Recipe { get; set; }
+}

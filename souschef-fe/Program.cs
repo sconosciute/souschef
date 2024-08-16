@@ -19,11 +19,11 @@ builder.Services.AddScoped<ICrudSvc<Recipe>, ClientRecipeService>();
 
 builder.Services.AddScoped<IMetricSvc, ClientMetricsService>();
 
-// builder.Services.AddScoped<ICrudSvc<Ingredient>, ClientIngredientService>();
-
 builder.Services.AddHttpClient("WebAPI",
     client => client.BaseAddress =
         new Uri(builder.Configuration["BackendUrl"] ?? throw new MissingUriException("Souschef-fe client base address")));
+
+builder.Services.AddScoped<IHttpService, HttpService>();
 
 var app = builder.Build();
 

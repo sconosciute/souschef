@@ -12,7 +12,7 @@ public interface IHttpService
     Task<TResponse?> Post<TRequest, TResponse>(string uri, TRequest value);
 }
 
-public class HttpService(HttpClient client, NavigationManager nav, ILocalStorageService localStore, IConfiguration conf)
+public class HttpService(HttpClient client, ILocalStorageService localStore)
     : IHttpService
 {
     public async Task<T?> Get<T>(string uri)
