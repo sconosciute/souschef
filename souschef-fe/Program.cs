@@ -13,12 +13,6 @@ builder.Logging.AddConsole();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<ICrudSvc<Message>, ClientMessageService>();
-
-builder.Services.AddScoped<ICrudSvc<User>, ClientUserService>();
-
-builder.Services.AddScoped<ICrudSvc<Tag>, ClientTagService>();
-
 builder.Services.AddScoped<ISearchSvc, ClientSearchService>();
 
 builder.Services.AddScoped<ICrudSvc<Recipe>, ClientRecipeService>();
