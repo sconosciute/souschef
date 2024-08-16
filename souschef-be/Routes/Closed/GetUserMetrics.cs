@@ -2,10 +2,11 @@
 using souschef_be.Services;
 using souschef_core.Model;
 using souschef_core.Model.DTO;
+using souschef_core.Services;
 
 namespace souschef_be.Routes.Closed;
 
-public class GetUserMetrics(UserMetricsService metricsSvc) : Endpoint<UserMetrics>
+public class GetUserMetrics(IMetricSvc metricsSvc) : Endpoint<UserMetrics>
 {
     public override void Configure()
     {

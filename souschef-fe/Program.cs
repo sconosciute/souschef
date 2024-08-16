@@ -23,6 +23,8 @@ builder.Services.AddScoped<ISearchSvc, ClientSearchService>();
 
 builder.Services.AddScoped<ICrudSvc<Recipe>, ClientRecipeService>();
 
+builder.Services.AddScoped<IMetricSvc, ClientMetricsService>();
+
 // builder.Services.AddScoped<ICrudSvc<Ingredient>, ClientIngredientService>();
 
 builder.Services.AddHttpClient("WebAPI",

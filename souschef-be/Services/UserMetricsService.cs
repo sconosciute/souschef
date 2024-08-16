@@ -5,7 +5,7 @@ using souschef_core.Services;
 
 namespace souschef_be.Services;
 
-public class UserMetricsService(DbContext db)
+public class UserMetricsService(DbContext db) : IMetricSvc
 {
     private readonly DbContext _db = db;
     public async Task<UserMetrics> GetMetrics(long userId)

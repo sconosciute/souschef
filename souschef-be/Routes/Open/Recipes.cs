@@ -36,7 +36,7 @@ public class GetAllRecipies(ICrudSvc<Recipe> recipeSvc) : EndpointWithoutRequest
 {
     public override void Configure()
     {
-        Get("/recipe");
+        Get("/recipe/all");
         AllowAnonymous();
     }
 
@@ -45,6 +45,8 @@ public class GetAllRecipies(ICrudSvc<Recipe> recipeSvc) : EndpointWithoutRequest
     {
         await SendAsync(await recipeSvc.GetAllAsync(), cancellation: ct);
     }
+    
+    
 }
 public class UpdateRecipe(ICrudSvc<Recipe> recipeSvc) : Endpoint<Recipe>
 {

@@ -49,7 +49,8 @@ builder.Services.AddScoped<ICrudSvc<Recipe>, PgCrudSvcComponent<Recipe>>();
 builder.Services.AddScoped<ICrudSvc<Tag>, PgCrudSvcComponent<Tag>>();
 builder.Services.AddScoped<ThinRecipeService>();
 builder.Services.AddScoped<ISearchSvc, PgRecipeSearchSvc>();
-builder.Services.AddScoped<UserMetricsService>();
+builder.Services.AddScoped<IMetricSvc, UserMetricsService>();
+
 
 var app = builder.Build();
 

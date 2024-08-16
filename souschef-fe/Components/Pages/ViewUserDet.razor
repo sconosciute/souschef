@@ -1,0 +1,91 @@
+﻿@page "/log/{UserId:long}"
+@using souschef_core.Model.DTO
+@using souschef_core.Model
+@using souschef_core.Services
+
+@inject ICrudSvc<User> UserService
+@inject IMetricSvc MetricService
+@* @inject ISearchSvc SearchService *@
+@inject ICrudSvc<Recipe> RecipeService
+@inject ISearchSvc SearchService
+
+@inject NavigationManager NavigationManager
+
+@if (_user == null || _metrics == null)
+{
+    <p>Loading recipe details...</p>
+}
+else
+{
+    <h3 style="text-align: center">Hello, @_user.DisplayName. Welcome to your page!</h3>
+    <p style="text-align: center">@_user.Email</p>
+    <br/>
+
+
+    @if (_metrics.AvgRating == null)
+    {
+        <p style="text-align: center">No rating!</p>
+    }
+    else
+    {
+        <p style="text-align: center">Average Rating: @_metrics.AvgRating</p>
+    }
+
+    @if (_metrics.NumRecipe == null || _metrics.NumRecipe == 0)
+    {
+        <p style="text-align: center">No recipes!</p>
+    }
+    else
+    {
+        <p style="text-align: center">Number Recipes: @_metrics.NumRecipe</p>
+    }
+}
+
+@if (_recipes != null)
+{
+    @foreach (var recipe in _recipes)
+    {
+        @if (recipe == null)
+        {
+            continue;
+        }
+        @if (recipe.Author == UserId)
+        {
+            <div class="col-md-3 mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">@recipe.Name</h5>
+                        <p class="card-text">@recipe.Description</p>
+                        @* <button class="btn btn-primary" @onclick="() => ViewRecipe(recipe.RecipeId)">View</button> *@
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+
+@code {
+
+    [Parameter] public long UserId { get; set; }
+
+    private User _user;
+    private UserMetrics _metrics;
+    private List<Recipe> _recipes;
+    
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserService.GetAsync(UserId);
+        _metrics = await MetricService.GetMetrics(UserId);
+
+        // _recipes = await RecipeService.GetAllAsync();
+        
+    }
+    
+    private void ViewRecipe(long recipeId)
+    {
+        NavigationManager.NavigateTo($"/search/{recipeId}");
+    }
+
+}
