@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Npgsql;
 using souschef_core.Model;
 
@@ -53,7 +54,11 @@ public partial class SouschefContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql(Source);
+    {
+        optionsBuilder.UseNpgsql(Source);
+        optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning));
+    }
+       
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

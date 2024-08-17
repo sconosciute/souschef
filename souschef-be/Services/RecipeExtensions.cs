@@ -9,7 +9,7 @@ public static class RecipeExtensions
 {
     public static async Task<HumanReadableRecipe> ToHumanReadable(this Recipe recipe)
     {
-        var db = new SouschefContext();
+        await using var db = new SouschefContext();
         var tags = db.Set<Tag>();
         
         var ingredients = recipe.IngrRecipes.Select(ir => ir.ToHumanReadable()).ToList();
@@ -28,7 +28,7 @@ public static class RecipeExtensions
 
     public static async Task<List<Tag>> GetTagEntities(this Recipe recipe)
     {
-        var db = new SouschefContext();
+        await using var db = new SouschefContext();
         return await db.Set<Tag>().Where(t => recipe.Tags != null && recipe.Tags.Contains(t.TagId)).ToListAsync();
     }
 }
