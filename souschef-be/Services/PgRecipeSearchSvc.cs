@@ -13,6 +13,7 @@ public class PgRecipeSearchSvc(DbContext db) : ISearchSvc
             .Where(r => r.Name != null && r.Name.ToLower().Contains(name.ToLower()))
             .Select(r => new ThinRecipe
                 { id = r.RecipeId, name = r.Name, description = r.Description, tags = r.GetTagEntities().Result })
+            .OrderBy(r => r.id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -26,6 +27,7 @@ public class PgRecipeSearchSvc(DbContext db) : ISearchSvc
             {
                 id = r.RecipeId, description = r.Description, name = r.Name, tags = r.GetTagEntities().Result
             })
+            .OrderBy(r => r.id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
