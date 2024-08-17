@@ -1,5 +1,7 @@
 ﻿using FastEndpoints;
+using souschef_be.Services;
 using souschef_core.Model;
+using souschef_core.Model.DTO;
 using souschef_core.Services;
 
 namespace souschef_be.Routes.Open;
@@ -18,21 +20,23 @@ public class AddRecipe(ICrudSvc<Recipe> recipeSvc) : Endpoint<Recipe>
     }
 }
 
-public class GetRecipe(ICrudSvc<Recipe> recipeSvc) : Endpoint<Recipe>
+public class GetRecipe(ICrudSvc<Recipe> recipeSvc) : Endpoint<Recipe, HumanReadableRecipe>
 {
     public override void Configure()
     {
         Get("/recipe/{@recipe_id}", recipe => new { recipe.RecipeId });
         AllowAnonymous();
     }
+    
+    
 
     public override async Task HandleAsync(Recipe req, CancellationToken ct)
     {
-        await SendAsync(await recipeSvc.GetAsync(req.RecipeId), cancellation: ct);
+        await SendAsync(await (await recipeSvc.GetAsync(req.RecipeId))?.ToHumanReadable()!, cancellation: ct);
     }
 }
 
-public class GetAllRecipies(ICrudSvc<Recipe> recipeSvc) : EndpointWithoutRequest
+public class GetAllRecipes(ICrudSvc<Recipe> recipeSvc) : EndpointWithoutRequest
 {
     public override void Configure()
     {
@@ -43,7 +47,16 @@ public class GetAllRecipies(ICrudSvc<Recipe> recipeSvc) : EndpointWithoutRequest
     // ask about this
     public override async Task HandleAsync(CancellationToken ct)
     {
-        await SendAsync(await recipeSvc.GetAllAsync(), cancellation: ct);
+        var recipes = await recipeSvc.GetAllAsync();
+        Console.Out.WriteLine("converting to HRRecipe");
+        List<HumanReadableRecipe> better = [];
+        if (recipes != null)
+            foreach (var r in recipes)
+            {
+                better.Add(await r.ToHumanReadable());
+            }
+
+        await SendAsync(better, cancellation: ct);
     }
     
     

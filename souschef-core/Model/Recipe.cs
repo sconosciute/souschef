@@ -15,7 +15,7 @@ public partial class Recipe : IDbModel
 
     public string? Description { get; set; }
 
-    public List<long>? Tags { get; set; }
+    public List<long?>? Tags { get; set; }
 
     public string? Directions { get; set; }
 

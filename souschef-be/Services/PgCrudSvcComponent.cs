@@ -10,19 +10,19 @@ public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, DbCont
 {
     private readonly DbSet<T> _set = db.Set<T>();
 
-    public async Task<T?> GetAsync(long id)
+    public virtual async Task<T?> GetAsync(long id)
     { 
         logger.LogDebug("Request for {type} ID {id} received", typeof(T), id);
         return await _set.FindAsync(id);
     }
 
-    public async Task<List<T>?> GetAllAsync()
+    public virtual async Task<List<T>?> GetAllAsync()
     {
         logger.LogDebug("Request for list of all {type} entities received", typeof(T));
         return await _set.ToListAsync();
     }
 
-    public async Task<T?> UpdateAsync(T? updated, long id)
+    public virtual async Task<T?> UpdateAsync(T? updated, long id)
     {
         var current = updated is null ? null : await _set.FindAsync(id);
         if (current is null)
@@ -41,7 +41,7 @@ public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, DbCont
             : throw new DbApiFailureException($"Single update call returned {committed} rows");
     }
 
-    public async Task<T?> AddAsync(T? ent)
+    public virtual async Task<T?> AddAsync(T? ent)
     {
         if (ent is null)
         {
@@ -55,7 +55,7 @@ public class PgCrudSvcComponent<T>(ILogger<PgCrudSvcComponent<T>> logger, DbCont
             : throw new DbApiFailureException($"Single add to Db resulted in {committed} rows returned");
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public virtual async Task<bool> DeleteAsync(long id)
     {
         logger.LogDebug("Request to delete {type} ID {id} received", typeof(T), id);
         var toDelete = await _set.FindAsync(id);
