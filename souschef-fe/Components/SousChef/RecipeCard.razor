@@ -1,8 +1,15 @@
 @using souschef_core.Model.DTO
 @using souschef_fe.Components.Basic
-<Card Title="@Recipe.name" BodyText="@Recipe.description" />
+<Card Title="@Recipe.name" BodyText="@Recipe.description">
+    <button class="btn btn-primary">
+        <NavLink class="nav-link stretched-link" href="@RefLink">View Recipe</NavLink>
+    </button>
+</Card>
 
 @code {
     [Parameter]
     public ThinRecipe Recipe { get; set; }
+
+    private string RefLink => $"recipe/{Recipe.id}";
+
 }

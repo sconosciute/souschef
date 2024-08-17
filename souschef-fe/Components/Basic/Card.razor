@@ -2,13 +2,13 @@
     <section class="card-body">
         <h5 class="card-title">@Title</h5>
         <p class="card-text">@BodyText</p>
-        @Children
+        @ChildContent
     </section>
 </div>
 
 @code {
     [Parameter] public string Title { get; set; } = "";
     [Parameter] public string? BodyText { get; set; }
-    [Parameter] public RenderFragment? Children { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
 }
