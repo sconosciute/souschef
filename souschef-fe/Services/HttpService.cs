@@ -32,9 +32,9 @@ public class HttpService(HttpClient client, ILocalStorageService localStore)
     {
         Validate.Begin()
             .IsNotNull(req.RequestUri, nameof(req.RequestUri))
-            .Check()
-            .IsValidUri(req.RequestUri!)
             .Check();
+            // .IsValidUri(req.RequestUri!)
+            // .Check();
         var token = await localStore.GetItem<string>("token");
         if (string.IsNullOrEmpty(token))
         {
@@ -54,7 +54,7 @@ public static class HttpValidationExtensions
     {
         return uri.IsAbsoluteUri
             ? (v ?? new Validation()).AddException(
-                new UriFormatException(uri + "not valid for this context"))
+                new UriFormatException(uri + " not valid for this context"))
             : null;
     }
 }
