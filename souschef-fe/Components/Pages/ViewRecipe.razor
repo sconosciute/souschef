@@ -6,18 +6,37 @@
 
 @inject ClientRecipeService RecService
 
+@inject ICrudSvc<User> UserService
 
-@* <h3>ViewRecipe</h3> *@
 
-@if (getRec == null)
+@if (getRec == null || _user == null)
 {
 <p>Loading recipe details...</p>
 }
 else
 {
     <h3 style="text-align: center">@getRec.Name</h3>
-    @* <h4 style="text-align: center">@getRec.Author</h4> *@
+    
+    <p style="text-align: center">@_user.DisplayName</p>
+    
     <p style="text-align: center">@getRec.Description</p>
+
+    <p style="text-align: center">[ @string.Join(", ", getRec.Tags.Select(tag => tag.TagName)) ]</p>
+    
+    <br/>
+    
+    @* @foreach (var ri in getRec.Ingredients.ToArray()) *@
+    @* { *@
+    @*     <p style="text-align: center">@ri.IngrName</p> *@
+    @* } *@
+    
+    <br/>
+    
+    <p style="text-align: center">@getRec.Directions</p>
+    
+    
+    
+    
 }
 
 
@@ -26,8 +45,12 @@ else
 
     private HumanReadableRecipe getRec;
 
+    private User _user;
+
     protected override async Task OnInitializedAsync()
     {
         getRec = await RecService.GetAsync(RecipeId);
+        _user = await UserService.GetAsync(getRec.AuthorId.GetValueOrDefault());
     }
+    
 }
