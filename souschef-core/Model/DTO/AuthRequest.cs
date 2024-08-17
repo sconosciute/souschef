@@ -16,4 +16,9 @@ public class AuthRequest(string username, string password)
 
     [Required]
     public string Password { get; set; } = password;
+
+    public override string ToString()
+    {
+       return $"AuthRequest {{Username: {Username}, Password: {Password}}}";
+    }
 }

@@ -9,4 +9,9 @@ public class AuthResponse(long id, string username, string displayName, string t
     public string Username { get; init; } = username;
     public string DisplayName { get; init; }
     public string Token { get; init; } = token;
+
+    public override string ToString()
+    {
+        return $"AuthResponse {{Id: {Id}, Username: {Username}, DisplayName: {DisplayName}, Token: {Token} }}";
+    }
 }
