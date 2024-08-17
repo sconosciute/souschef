@@ -1,7 +1,8 @@
 @using souschef_core.Model.DTO
 @using souschef_fe.Components.Basic
-<Card Title="@Recipe.Name" BodyText="@Recipe.Description" />
+<Card Title="@Recipe.name" BodyText="@Recipe.description" />
 
 @code {
-    HumanReadableRecipe Recipe { get; set; }
+    [Parameter]
+    public ThinRecipe Recipe { get; set; }
 }

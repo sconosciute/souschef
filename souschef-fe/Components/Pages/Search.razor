@@ -3,6 +3,7 @@
 @using souschef_core.Model
 @using souschef_core.Model.DTO
 @using souschef_core.Services
+@using souschef_fe.Components.SousChef
 
 @inject ICrudSvc<Tag> TagService
 
@@ -57,16 +58,7 @@
         {
             @foreach (var recipe in _recipes)
             {
-                <div class="col-md-3 mb-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">@recipe.name</h5>
-                            <p class="card-text">@recipe.description</p>
-                            @* <p class="card-text">@string.Join(", ", recipe.tags)</p> *@
-                            <button class="btn btn-primary" @onclick="() => ViewRecipe(recipe.id)">View</button>
-                        </div>
-                    </div>
-                </div>
+                <RecipeCard Recipe="@recipe" />
             }
         }
         else

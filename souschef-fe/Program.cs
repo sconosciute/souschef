@@ -15,6 +15,8 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddScoped<ISearchSvc, ClientSearchService>();
 
+builder.Services.AddScoped<ICrudSvc<Tag>, ClientTagService>();
+
 builder.Services.AddScoped<ICrudSvc<Recipe>, ClientRecipeService>();
 
 builder.Services.AddScoped<IMetricSvc, ClientMetricsService>();
@@ -24,6 +26,7 @@ builder.Services.AddHttpClient("WebAPI",
         new Uri(builder.Configuration["BackendUrl"] ?? throw new MissingUriException("Souschef-fe client base address")));
 
 builder.Services.AddScoped<IHttpService, HttpService>();
+builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 
 var app = builder.Build();
 
