@@ -17,7 +17,7 @@ builder.Services.AddScoped<ISearchSvc, ClientSearchService>();
 
 builder.Services.AddScoped<ICrudSvc<Tag>, ClientTagService>();
 
-builder.Services.AddScoped<ICrudSvc<Recipe>, ClientRecipeService>();
+builder.Services.AddScoped<ClientRecipeService, ClientRecipeService>();
 
 builder.Services.AddScoped<IMetricSvc, ClientMetricsService>();
 

@@ -7,20 +7,20 @@ using souschef_core.Services;
 
 using System.Net;
 
-public class ClientRecipeService(HttpClient api) : ICrudSvc<Recipe>
+public class ClientRecipeService(HttpClient api)
 {
     private const string Uri = "http://localhost:5293/recipe";
     
     
     
-    public async Task<Recipe?> GetAsync(long id)
+    public async Task<HumanReadableRecipe?> GetAsync(long id)
     {
-        return await api.GetFromJsonAsync<Recipe>($"{Uri}/{id}");
+        return await api.GetFromJsonAsync<HumanReadableRecipe>($"{Uri}/{id}");
     }
     
-    public async Task<List<Recipe>?> GetAllAsync()
+    public async Task<List<HumanReadableRecipe>?> GetAllAsync()
     {
-        return await api.GetFromJsonAsync<List<Recipe>>($"{Uri}/all") ?? [];
+        return await api.GetFromJsonAsync<List<HumanReadableRecipe>>($"{Uri}/all") ?? [];
     }
 
     public async Task<Recipe?> AddAsync(Recipe? rec)

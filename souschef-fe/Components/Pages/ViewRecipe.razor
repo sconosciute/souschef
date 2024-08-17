@@ -2,8 +2,9 @@
 @using souschef_core.Model.DTO
 @using souschef_core.Model
 @using souschef_core.Services
+@using souschef_fe.Services
 
-@inject ICrudSvc<Recipe> RecService
+@inject ClientRecipeService RecService
 
 
 @* <h3>ViewRecipe</h3> *@
@@ -23,7 +24,7 @@ else
 @code {
     [Parameter] public long RecipeId { get; set; }
 
-    private Recipe getRec;
+    private HumanReadableRecipe getRec;
 
     protected override async Task OnInitializedAsync()
     {
