@@ -1,4 +1,8 @@
-﻿<div class="navbar navbar-expand-lg navbar-dark bg-primary">
+﻿@using souschef_core.Model.DTO
+@using souschef_fe.Services
+@inject ILocalStorageService LocalStore;
+
+<div class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="">souschef-fe</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,38 +15,39 @@
                         <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
                     </NavLink>
                 </li>
-                @* <li class="nav-item"> *@
-                @*     <NavLink class="nav-link text-white" href="counter"> *@
-                @*         <span class="bi bi-plus-square-fill" aria-hidden="true"></span> Counter *@
-                @*     </NavLink> *@
-                @* </li> *@
-                @* <li class="nav-item"> *@
-                @*     <NavLink class="nav-link text-white" href="weather"> *@
-                @*         <span class="bi bi-list-nested" aria-hidden="true"></span> Weather *@
-                @*     </NavLink> *@
-                @* </li> *@
-                @* <li class="nav-item"> *@
-                @*     <NavLink class="nav-link text-white" href="messages"> *@
-                @*         <span class="bi bi-list-nested" aria-hidden="true"></span> Messages *@
-                @*     </NavLink> *@
-                @* </li> *@
-                @* <li class="nav-item"> *@
-                @*     <NavLink class="nav-link text-white" href="tags"> *@
-                @*         <span class="bi bi-list-nested" aria-hidden="true"></span> Tags *@
-                @*     </NavLink> *@
-                @* </li>  *@
                 <li class="nav-item">
                     <NavLink class="nav-link text-white" href="search">
                         <span class="bi bi-list-nested" aria-hidden="true"></span> Search
                     </NavLink>
                 </li>
 
-                <li class="nav-item">
-                    <NavLink class="nav-link text-white" href="log">
-                        <span class="bi bi-list-nested" aria-hidden="true"></span> LogIn
-                    </NavLink>
-                </li>
+                @if (_loggedIn)
+                {
+                    <li class="nav-item">
+                        <NavLink class="nav-link text-white" href="logout">
+                            <span class="bi bi-list-nested" aria-hidden="true"></span> Log out
+                        </NavLink>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <NavLink class="nav-link text-white" href="login">
+                            <span class="bi bi-list-nested" aria-hidden="true"></span> Log in
+                        </NavLink>
+                    </li>
+                }
             </ul>
         </div>
     </div>
 </div>
+
+@code
+{
+    private bool _loggedIn = false;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _loggedIn = (await LocalStore.GetItem<AuthResponse>("user")) is not null;
+    }
+}

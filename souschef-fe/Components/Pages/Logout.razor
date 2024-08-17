@@ -1,0 +1,16 @@
+@page "/Logout"
+@rendermode InteractiveServer
+
+@using souschef_fe.Services
+@inject ILocalStorageService LocalStore;
+@inject NavigationManager Nav;
+<h3>Logging you out!</h3>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await LocalStore.RemoveItem("user");
+        Nav.NavigateTo("");
+    }
+
+}

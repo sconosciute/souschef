@@ -1,22 +1,69 @@
 @page "/Login"
+@rendermode InteractiveServer
+
+@using System.Net
+@using souschef_core.Exceptions
 @using souschef_core.Model.DTO
 @using souschef_fe.Services
-@inject HttpService apiClient;
+
+@inject IHttpService ApiClient;
+@inject ILocalStorageService LocalStore;
+@inject NavigationManager Nav;
+
 <h3>Login</h3>
 <EditForm Model="Req" OnValidSubmit="Submit">
-    <DataAnnotationsValidator>
-        <InputText id="username" class="form-control" bind-Value="@Req.Username"></InputText>
-        <InputText id="password" class="form-control" bind-Value="@Req.Password"></InputText>
-    </DataAnnotationsValidator>
+    <DataAnnotationsValidator />
+    <InputText id="username" class="form-control" @bind-Value="@Req.Username"></InputText>
+    <InputText id="password" class="form-control" @bind-Value="@Req.Password" type="password"></InputText>
+    <ValidationSummary />
+    <button type="submit" class="btn-primary btn">Log in</button>
+
+    @if (Errors.Count > 0)
+    {
+        <ul>
+        @foreach (var e in Errors)
+        {
+            <li>@e</li>
+        }
+        </ul>
+    }
+    
 
 </EditForm>
 @code {
-    [SupplyParameterFromForm]
-    public required AuthRequest Req { get; set; }
+    [Parameter] public required AuthRequest Req { get; set; } = new();
 
-    private void Submit()
+    private List<string> Errors { get; set; } = [];
+
+    private async void Submit()
     {
-        apiClient.Post<AuthRequest, AuthResponse>("localhost:5293/login", Req!);
+        try
+        {
+            var res = await ApiClient.Post<AuthRequest, AuthResponse>("http://localhost:5293/login", Req);
+            Console.Out.WriteLine(res);
+            if (res is null)
+            {
+                throw new DbApiFailureException("Call to login resulted in null response to client.");
+            }
+            await LocalStore.SetItem("user", res);
+            Nav.NavigateTo("");
+
+        }
+        catch (HttpRequestException e)
+        {
+            Errors = [];
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+            switch (e.StatusCode)
+            {
+                case HttpStatusCode.Unauthorized : Errors.Add("Incorrect username or password!");
+                    break;
+                case HttpStatusCode.NotFound : Errors.Add("Couldn't find that user!");
+                    break;
+                default : throw;
+            }
+
+
+        }
     }
 
 }
